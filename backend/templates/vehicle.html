@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Info</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-color: #1d3557;
+        --secondary-color: #457b9d;
+        --accent-color: #a8dadc;
+        --background-color: #f1faee;
+        --text-color: #333;
+        --light-gray: #e0e0e0;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-color) 0%,
+          #eaf4f9 100%
+        );
+        color: var(--text-color);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: #ffffff;
+        margin-top: 150px;
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        border: 1px solid var(--light-gray);
+      }
+
+      .container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        color: var(--primary-color);
+        font-size: 28px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 12px;
+        display: inline-block;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid var(--light-gray);
+        margin-bottom: 16px;
+        transition: transform 0.3s ease;
+      }
+
+      img:hover {
+        transform: scale(1.03);
+      }
+
+      .info {
+        margin-bottom: 14px;
+        font-size: 16px;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        padding: 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s ease;
+        border: 1px solid var(--light-gray);
+      }
+
+      .info:hover {
+        background-color: var(--accent-color);
+        color: #ffffff;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .qr-code {
+        margin-top: 24px;
+        padding: 16px;
+        background-color: #f9fafb;
+        border-radius: 12px;
+        display: inline-block;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--light-gray);
+        transition: transform 0.2s ease;
+      }
+
+      .qr-code:hover {
+        transform: scale(1.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .qr-code img {
+        width: 140px;
+        height: 140px;
+        border-radius: 8px;
+      }
+
+      .footer {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #888;
+        border-top: 1px solid var(--light-gray);
+        padding-top: 12px;
+        font-weight: 400;
+      }
+
+      /* ✅ Responsive Styling */
+      @media (max-width: 480px) {
+        .container {
+          padding: 24px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        .info {
+          font-size: 14px;
+          padding: 10px;
+        }
+
+        .qr-code img {
+          width: 120px;
+          height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Vehicle Number : {{vehicleNumber}}</h1>
+
+      <!-- Owner Image -->
+      <img src="{{ownerImage}}" alt="Owner Image" />
+
+      <!-- Vehicle Details -->
+      <div class="info"><strong>Owner:</strong> {{ownerName}}</div>
+      <div class="info"><strong>Phone Number:</strong> {{phoneNumber}}</div>
+      <div class="info">
+        <strong>Permitted Route:</strong> {{permittedRoute}}
+      </div>
+
+      <!-- QR Code -->
+      <div class="qr-code">
+        <h3
+          style="
+            color: var(--primary-color);
+            font-size: 18px;
+            margin-bottom: 8px;
+          "
+        >
+          QR Code
+        </h3>
+        <img src="{{qrCode}}" alt="QR Code" />
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">© 2025 Auto Tracker. All rights reserved.</div>
+    </div>
+  </body>
+</html>
