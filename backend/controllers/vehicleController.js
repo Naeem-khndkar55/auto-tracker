@@ -1,8 +1,9 @@
 const Vehicle = require('../models/Vehicle');
 const QRCode = require('qrcode');
 const cloudinary = require('../utils/cloudinary');
+require('dotenv').config();
 
-const BASE_URL = 'http://192.168.10.126:5000'; // ✅ Use machine IP
+const BASE_URL = process.env.BASE_URL; // ✅ Use machine IP
 const fs = require('fs');
 const path = require('path');
 // ✅ Add Vehicle
