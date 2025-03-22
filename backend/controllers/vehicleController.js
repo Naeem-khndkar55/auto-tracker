@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 // ✅ Add Vehicle
 const addVehicle = async (req, res) => {
-  const { ownerName, phoneNumber, vehicleNumber, permittedRoute } = req.body;
+  const { ownerName, phoneNumber,address, vehicleNumber, permittedRoute } = req.body;
 
   try {
     let ownerImage = '';
@@ -21,6 +21,7 @@ const addVehicle = async (req, res) => {
     const vehicle = new Vehicle({
       ownerName,
       phoneNumber,
+      address,
       vehicleNumber,
       permittedRoute,
       ownerImage,
@@ -80,6 +81,7 @@ const getVehicleById = async (req, res) => {
       .replace('{{vehicleNumber}}', vehicle.vehicleNumber)
       .replace('{{ownerName}}', vehicle.ownerName)
       .replace('{{phoneNumber}}', vehicle.phoneNumber)
+      .replace('{{address}}', vehicle.address)
       .replace('{{permittedRoute}}', vehicle.permittedRoute)
       .replace('{{ownerImage}}', vehicle.ownerImage || '')
       .replace('{{qrCode}}', vehicle.qrCode || '');
@@ -95,12 +97,12 @@ const getVehicleById = async (req, res) => {
 
 // ✅ Update Vehicle
 const updateVehicle = async (req, res) => {
-  const { ownerName, phoneNumber, vehicleNumber, permittedRoute } = req.body;
+  const { ownerName, phoneNumber,address, vehicleNumber, permittedRoute } = req.body;
 
   try {
     const updatedVehicle = await Vehicle.findOneAndUpdate(
       { _id: req.params.id },
-      { ownerName, phoneNumber, vehicleNumber, permittedRoute },
+      { ownerName, phoneNumber,address, vehicleNumber, permittedRoute },
       { new: true }
     );
 

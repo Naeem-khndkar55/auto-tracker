@@ -24,6 +24,7 @@ export const addVehicle = async (data) => {
   const formData = new FormData();
   formData.append('ownerName', data.ownerName);
   formData.append('phoneNumber', data.phoneNumber);
+  formData.append('address', data.address);
   formData.append('vehicleNumber', data.vehicleNumber);
   formData.append('permittedRoute', data.permittedRoute);
   formData.append('ownerImage', data.ownerImage);
@@ -39,6 +40,7 @@ export const updateVehicle = async (id, data) => {
   const formData = new FormData();
   formData.append('ownerName', data.ownerName);
   formData.append('phoneNumber', data.phoneNumber);
+  formData.append('address', data.address);
   formData.append('vehicleNumber', data.vehicleNumber);
   formData.append('permittedRoute', data.permittedRoute);
   if (data.ownerImage) formData.append('ownerImage', data.ownerImage);

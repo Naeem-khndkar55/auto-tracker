@@ -135,6 +135,9 @@ const VehicleList = () => {
                 Phone Number
               </th>
               <th className="border p-3 text-left font-semibold text-gray-700">
+                Address
+              </th>
+              <th className="border p-3 text-left font-semibold text-gray-700">
                 Vehicle Number
               </th>
               <th className="border p-3 text-left font-semibold text-gray-700">
@@ -158,6 +161,9 @@ const VehicleList = () => {
                   </td>
                   <td className="border p-3 text-gray-800">
                     {vehicle.phoneNumber}
+                  </td>
+                  <td className="border p-3 text-gray-800">
+                    {vehicle.address}
                   </td>
                   <td className="border p-3 text-gray-800">
                     {vehicle.vehicleNumber}

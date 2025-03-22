@@ -6,6 +6,7 @@ const AddVehicle = () => {
   const [formData, setFormData] = useState({
     ownerName: "",
     phoneNumber: "",
+    address: "",
     vehicleNumber: "",
     permittedRoute: "",
     ownerImage: null,
@@ -34,6 +35,7 @@ const AddVehicle = () => {
       setFormData({
         ownerName: "",
         phoneNumber: "",
+        address: "",
         vehicleNumber: "",
         permittedRoute: "",
         ownerImage: null,
@@ -66,6 +68,14 @@ const AddVehicle = () => {
         value={formData.phoneNumber}
         onChange={handleChange}
         placeholder="Phone Number"
+        className="w-full p-3 border border-gray-300 rounded-md mb-2 focus:border-blue-400 transition duration-200"
+        required
+      />
+      <input
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        placeholder="Address"
         className="w-full p-3 border border-gray-300 rounded-md mb-2 focus:border-blue-400 transition duration-200"
         required
       />

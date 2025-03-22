@@ -6,6 +6,7 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
     ownerName: "",
     phoneNumber: "",
+    address: "",
     vehicleNumber: "",
     permittedRoute: "",
     ownerImage: null, // ✅ To handle file upload
@@ -19,6 +20,7 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
       setFormData({
         ownerName: vehicleData.ownerName || "",
         phoneNumber: vehicleData.phoneNumber || "",
+        address: vehicleData.address || "",
         vehicleNumber: vehicleData.vehicleNumber || "",
         permittedRoute: vehicleData.permittedRoute || "",
         ownerImage: null,
@@ -92,7 +94,7 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
             name="ownerName"
             value={formData.ownerName}
             onChange={handleChange}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Owner Name"
             required
           />
@@ -103,8 +105,17 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleChange}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Phone Number"
+            required
+          />
+          <input
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Address"
             required
           />
 
@@ -114,7 +125,7 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
             name="vehicleNumber"
             value={formData.vehicleNumber}
             onChange={handleChange}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Vehicle Number"
             required
           />
@@ -125,7 +136,7 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
             name="permittedRoute"
             value={formData.permittedRoute}
             onChange={handleChange}
-            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Permitted Route"
             required
           />
@@ -146,7 +157,7 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="w-full h-40 object-cover rounded-md border"
+                  className="w-full h-30 object-cover rounded-md border"
                 />
               </div>
             )}
