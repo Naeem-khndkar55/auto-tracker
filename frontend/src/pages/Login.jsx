@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { login } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { login: loginUser } = useAuth();
+  const { login: loginUser, user } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,7 +27,9 @@ const Login = () => {
       setLoading(false); // ✅ Stop loading state
     }
   };
-
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  }
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <form
