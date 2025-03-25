@@ -11,7 +11,7 @@ const Sidebar = () => {
 
   return (
     <div className="w-64 bg-gray-800 text-white h-screen p-4">
-      <h2 className="text-2xl font-bold mb-6">Vehicle Management</h2>
+      <h2 className="text-2xl font-bold mb-6">Vehicle Info Cumilla</h2>
       <ul>
         <li
           onClick={() => navigate("/dashboard")}
