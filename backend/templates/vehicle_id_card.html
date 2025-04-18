@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle ID Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Include html2pdf.js for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+      :root {
+        --primary-color: #1d3557;
+        --secondary-color: #457b9d;
+        --accent-color: #a8dadc;
+        --background-color: #f1faee;
+        --text-color: #333;
+        --light-gray: #e0e0e0;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-color) 0%,
+          #eaf4f9 100%
+        );
+        color: var(--text-color);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .id-card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 350px;
+        text-align: left;
+        border: 2px solid var(--primary-color);
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .id-card h2 {
+        color: var(--primary-color);
+        font-size: 20px;
+        margin-bottom: 12px;
+        text-align: center;
+        border-bottom: 1px solid var(--accent-color);
+        padding-bottom: 8px;
+      }
+
+      .id-card .info {
+        font-size: 14px;
+        margin-bottom: 8px;
+        padding: 8px;
+        background-color: #f9fafb;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: 1px solid var(--light-gray);
+      }
+
+      .id-card .info:hover {
+        background-color: var(--accent-color);
+        color: #ffffff;
+        transform: translateY(-3px);
+      }
+
+      .id-card .qr-code {
+        display: flex;
+        justify-content: center;
+        margin-top: 12px;
+        padding: 10px;
+        background-color: #f9fafb;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .id-card .qr-code img {
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+      }
+
+      .id-card .owner-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--secondary-color);
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      .download-btn {
+        background-color: var(--primary-color);
+        color: #ffffff;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .download-btn:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-3px);
+      }
+
+      .footer {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #888;
+        border-top: 1px solid var(--light-gray);
+        padding-top: 12px;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 480px) {
+        .id-card {
+          padding: 16px;
+          max-width: 300px;
+        }
+
+        .id-card h2 {
+          font-size: 18px;
+        }
+
+        .id-card .info {
+          font-size: 12px;
+          padding: 6px;
+        }
+
+        .id-card .owner-image {
+          width: 60px;
+          height: 60px;
+          top: 15px;
+          right: 15px;
+        }
+
+        .id-card .qr-code img {
+          width: 80px;
+          height: 80px;
+        }
+
+        .download-btn {
+          padding: 10px 20px;
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ID Card Section -->
+    <div class="id-card" id="id-card">
+      <h2>Vehicle ID Card</h2>
+      <img
+        src="https://via.placeholder.com/80"
+        alt="Owner Image"
+        class="owner-image"
+      />
+      <div class="info"><strong>Vehicle Number:</strong> ABC-1234</div>
+      <div class="info"><strong>Owner:</strong> John Doe</div>
+      <div class="info"><strong>Phone Number:</strong> +1234567890</div>
+      <div class="info"><strong>Address:</strong> 123 Main St, Cumilla</div>
+      <div class="info"><strong>Permitted Route:</strong> City Route A</div>
+      <div class="qr-code">
+        <img src="https://via.placeholder.com/100" alt="QR Code" />
+      </div>
+    </div>
+
+    <!-- Download Button -->
+    <button class="download-btn" onclick="downloadPDF()">
+      Download ID Card as PDF
+    </button>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 Vehicle Info Cumilla. All rights reserved.</div>
+
+    <script>
+      function downloadPDF() {
+        const element = document.getElementById("id-card");
+        const opt = {
+          margin: 0.5,
+          filename: `Vehicle_ID_ABC-1234.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+        };
+        html2pdf().set(opt).from(element).save();
+      }
+    </script>
+  </body>
+</html>

@@ -3,12 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vehicle Info</title>
+    <title>Vehicle Info with ID Card</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@350;400;500;600&family=Sutra:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
       :root {
@@ -18,6 +25,9 @@
         --background-color: #f1faee;
         --text-color: #333;
         --light-gray: #e0e0e0;
+        --id-blue: #003087;
+        --id-green: #28a745;
+        --id-red: #dc3545;
       }
 
       body {
@@ -29,16 +39,15 @@
         );
         color: var(--text-color);
         margin: 0;
-        padding: 0;
+        padding: 20px;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
       }
 
       .container {
         background-color: #ffffff;
-        margin-top: 450px;
         padding: 32px;
         border-radius: 16px;
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
@@ -47,6 +56,7 @@
         text-align: center;
         transition: transform 0.2s ease, box-shadow 0.3s ease;
         border: 1px solid var(--light-gray);
+        margin-bottom: 40px;
       }
 
       .container:hover {
@@ -125,13 +135,130 @@
         color: #888;
         border-top: 1px solid var(--light-gray);
         padding-top: 12px;
-        font-weight: 400;
+        font-weight: 350;
       }
 
-      /* ✅ Responsive Styling */
+      /* ID Card Section */
+      .id-card {
+        background-color: #ffffff;
+        width: 2in;
+        height: 3.3in;
+        padding: 0.1in;
+        margin: auto;
+        border-radius: 0.05in;
+        box-shadow: 0 0.03in 0.08in rgba(0, 0, 0, 0.1);
+        font-family: "Noto Sans Bengali", sans-serif;
+        text-align: center;
+        background: linear-gradient(180deg, #e6f0ff 0%, #ffffff 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+      }
+
+      .id-card-header {
+        margin-bottom: 0.05in;
+      }
+
+      .id-card-header h2 {
+        color: #000;
+        font-size: 0.14in;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .id-card-header .unit {
+        color: #000;
+        font-size: 0.08in;
+        margin-top: 0.01in;
+      }
+
+      .id-card-qr {
+        margin: 0.05in 0;
+      }
+
+      .id-card-qr img {
+        width: 1.2in;
+        height: 1.2in;
+        background-color: #fff;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .id-card-details {
+        background-color: var(--id-blue);
+        color: #ffffff;
+        padding: 0.06in;
+        border-radius: 0.03in;
+        margin-bottom: 0.05in;
+      }
+
+      .id-card-details > div {
+        font-size: 0.08in;
+        margin: 0.03in 0;
+      }
+
+      .id-card-details .vehicle-number {
+        font-size: 0.12in;
+        font-weight: 500;
+        background-color: transparent;
+        color: #ffffff;
+        margin: 0.03in 0;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .id-card-details .detail-row {
+        font-size: 0.08in;
+        text-align: center;
+      }
+
+      .id-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.08in;
+        margin-top: 0.03in;
+      }
+
+      .id-card-footer .authority {
+        color: #000;
+        font-weight: 500;
+      }
+
+      .id-card-footer .badge {
+        background-color: var(--id-green);
+        color: #ffffff;
+        padding: 0.02in 0.04in;
+        border-radius: 0.02in;
+      }
+
+      .id-card-note {
+        color: var(--id-red);
+        font-size: 0.07in;
+        margin-top: 0.03in;
+      }
+
+      .download-btn {
+        background-color: var(--primary-color);
+        color: #ffffff;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .download-btn:hover {
+        background-color: var(--secondary-color);
+      }
+
       @media (max-width: 480px) {
         .container {
-          padding: 24px;
+          padding: 12px;
         }
 
         h1 {
@@ -140,32 +267,41 @@
 
         .info {
           font-size: 14px;
-          padding: 10px;
         }
 
         .qr-code img {
-          width: 120px;
-          height: 120px;
+          width: 100px;
+          height: 100px;
+        }
+
+        .download-btn {
+          padding: 10px 20px;
+          font-size: 14px;
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Vehicle Number : {{vehicleNumber}}</h1>
+      <h1>Vehicle Number: <span id="vehicleNumber">{{vehicleNumber}}</span></h1>
 
-      <!-- Owner Image -->
-      <img src="{{ownerImage}}" alt="Owner Image" />
+      <img src="{{ownerImage}}" alt="Owner Image" id="vehicleOwnerImage" />
 
-      <!-- Vehicle Details -->
-      <div class="info"><strong>Owner:</strong> {{ownerName}}</div>
-      <div class="info"><strong>Phone Number:</strong> {{phoneNumber}}</div>
-      <div class="info"><strong>Address:</strong> {{address}}</div>
       <div class="info">
-        <strong>Permitted Route:</strong> {{permittedRoute}}
+        <strong>Owner:</strong> <span id="ownerName">{{ownerName}}</span>
+      </div>
+      <div class="info">
+        <strong>Phone Number:</strong>
+        <span id="phoneNumber">{{phoneNumber}}</span>
+      </div>
+      <div class="info">
+        <strong>Address:</strong> <span id="address">{{address}}</span>
+      </div>
+      <div class="info">
+        <strong>Permitted Route:</strong>
+        <span id="permittedRoute">{{permittedRoute}}</span>
       </div>
 
-      <!-- QR Code -->
       <div class="qr-code">
         <h3
           style="
@@ -176,13 +312,112 @@
         >
           QR Code
         </h3>
-        <img src="{{qrCode}}" alt="QR Code" />
+        <img src="{{qrCode}}" alt="QR Code" id="vehicleQrCode" />
       </div>
 
-      <!-- Footer -->
       <div class="footer">
         © 2025 Vehicle Info Cumilla. All rights reserved.
       </div>
     </div>
+
+    <div class="id-card" id="id-card">
+      <div class="id-card-header">
+        <h2>মিশুক মালিক সমিতি</h2>
+        <div class="unit">কুমিল্লা-৩৫০০</div>
+      </div>
+      <div class="id-card-qr">
+        <img src="{{qrCode}}" alt="QR Code" id="idQrCode" />
+      </div>
+      <div class="id-card-details">
+        <div>যানের পরিচিতি নাম্বার</div>
+        <div class="vehicle-number" id="idVehicleNumber">{{vehicleNumber}}</div>
+        <div class="detail-row">
+          <span>গাডির ধরন: মিশুক</span>
+        </div>
+      </div>
+      <div class="id-card-footer">
+        <div class="badge">রুট:</div>
+        <div class="authority">কুমিল্লা সিটি কর্পোরেশন</div>
+      </div>
+      <div class="id-card-note">কার্ডটি হস্তান্তর যোগ্য নহে</div>
+    </div>
+
+    <button class="download-btn" onclick="downloadPDF()">
+      Download ID Card as PDF
+    </button>
+
+    <script>
+      // Function to ensure all images are loaded
+      function ensureImagesLoaded(element) {
+        return new Promise((resolve) => {
+          const images = element.querySelectorAll("img");
+          if (images.length === 0) return resolve();
+
+          let loadedCount = 0;
+          const checkComplete = () => {
+            loadedCount++;
+            if (loadedCount === images.length) resolve();
+          };
+
+          images.forEach((img) => {
+            if (img.complete && img.naturalWidth !== 0) {
+              checkComplete();
+            } else {
+              img.onload = checkComplete;
+              img.onerror = checkComplete;
+            }
+          });
+        });
+      }
+
+      async function populateIdCard() {
+        try {
+          document.getElementById("idVehicleNumber").textContent =
+            document.getElementById("vehicleNumber").textContent || "N/A";
+
+          const qrCodeSrc = document.getElementById("vehicleQrCode").src;
+          if (qrCodeSrc && qrCodeSrc !== window.location.href) {
+            document.getElementById("idQrCode").src = qrCodeSrc;
+          } else {
+            document.getElementById("idQrCode").src =
+              "https://via.placeholder.com/115?text=QR+Code";
+          }
+
+          await ensureImagesLoaded(document.getElementById("id-card"));
+        } catch (error) {
+          console.error("Error in populateIdCard:", error);
+        }
+      }
+
+      async function downloadPDF() {
+        await populateIdCard();
+        const element = document.getElementById("id-card");
+        const vehicleNumber =
+          document.getElementById("idVehicleNumber").textContent || "unknown";
+
+        const opt = {
+          margin: 0,
+          filename: `Vehicle_ID_${vehicleNumber}.pdf`,
+          image: { type: "jpeg", quality: 1 },
+          html2canvas: {
+            scale: 4,
+            useCORS: true,
+            scrollX: 0,
+            scrollY: 0,
+          },
+          jsPDF: {
+            unit: "in",
+            format: [2.1, 3.4],
+            orientation: "portrait",
+          },
+        };
+
+        await ensureImagesLoaded(element);
+        await html2pdf().set(opt).from(element).save();
+      }
+
+      // Call populateIdCard initially to sync contents
+      populateIdCard();
+    </script>
   </body>
 </html>
