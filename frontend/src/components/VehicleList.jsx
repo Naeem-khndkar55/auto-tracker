@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getAllVehicles, deleteVehicle } from "../services/api";
 import { toast } from "react-toastify";
 import EditVehicle from "./EditVehicle";
+import IDCardPreview from "./IDCardPreview";
+import Dialog from "./Dialog";
 
 const VehicleList = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -10,9 +12,16 @@ const VehicleList = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Dialog state which  the dialog is open or not
+  const [showDialog, setShowDialog] = useState(false);
+
   // ✅ Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
+
+  // ✅ Open and close dialog functions
+  const openDialog = () => setShowDialog(true);
+  const closeDialog = () => setShowDialog(false);
 
   useEffect(() => {
     fetchData();
@@ -78,15 +87,19 @@ const VehicleList = () => {
   };
 
   // ✅ Download QR Code
-  const handleDownloadQR = (qrCode) => {
-    if (qrCode) {
-      const link = document.createElement("a");
-      link.href = qrCode;
-      link.download = "vehicle-qr-code.png";
-      link.click();
-    } else {
-      toast.error("No QR code available");
-    }
+  const handleDownloadQR = (vehicle) => {
+    // if (vehicle) {
+    //   // const link = document.createElement("a");
+    //   // link.href = qrCode;
+    //   // link.download = "vehicle-qr-code.png";
+    //   // link.click();
+
+    // } else {
+    //   toast.error("No QR code available");
+    // }
+    setSelectedVehicle(vehicle);
+
+    openDialog();
   };
 
   // ✅ Pagination Logic
@@ -104,7 +117,7 @@ const VehicleList = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto mt-8">
+    <div className="min-h-screen mx-auto mt-8">
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
         Vehicle List
       </h2>
@@ -189,7 +202,7 @@ const VehicleList = () => {
                     {/* ✅ QR Code Button (Restored) */}
                     <button
                       className="bg-green-500 text-white px-4 py-1 rounded-md hover:bg-green-600 transition"
-                      onClick={() => handleDownloadQR(vehicle.qrCode)}
+                      onClick={() => handleDownloadQR(vehicle)}
                     >
                       QR Code
                     </button>
@@ -242,6 +255,13 @@ const VehicleList = () => {
         vehicleData={selectedVehicle}
         onClose={() => setIsEditOpen(false)}
         onUpdate={handleUpdateChange}
+      />
+      {/* ✅ Dialog for QR Code */}
+      {/* Overlay */}
+      <Dialog
+        showDialog={showDialog}
+        closeDialog={() => setShowDialog(false)}
+        vichicle={selectedVehicle}
       />
     </div>
   );

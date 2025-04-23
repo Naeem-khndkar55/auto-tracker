@@ -1,1 +1,162 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Poppins Bold";
+  src: url("/fonts/Poppins-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ruposhi Bangla Italic";
+  src: url("/fonts/Ruposhi-Bangla-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ruposhi Bangla Uni Bold";
+  src: url("/fonts/Ruposhi-Bangla-Uni-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ruposhi Bangla Uni Italic";
+  src: url("/fonts/Ruposhi-Bangla-Uni-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ruposhi Bangla Uni";
+  src: url("/fonts/Ruposhi-Bangla-Uni.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.permit-container {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.permit-card {
+  background-color: white;
+  border: 2px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.permit-header {
+  background-color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.permit-header h2 {
+  font-size: 1.75rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.permit-header p {
+  font-size: 1rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+  font-weight: bold;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.qr-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.blue-section {
+  background-color: #1e3a8a;
+  color: white;
+  padding: 1rem;
+}
+
+.blue-section p {
+  font-size: 1.25rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+
+  font-weight: 500;
+}
+
+.blue-section h3 {
+  font-size: 2rem;
+  font-family: "Poppins Bold", sans-serif;
+
+  font-weight: bold;
+  font-weight: 900;
+}
+
+.blue-section span {
+  font-size: 1.35rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+}
+
+.route-section {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  margin-top: 0.5rem;
+}
+
+.route-label {
+  background-color: #047857;
+  color: white;
+  padding: 0.25rem;
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  margin-right: 0.5rem;
+  margin-top: 1rem;
+}
+
+.route-label span {
+  font-size: 1.25rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+
+  font-weight: bold;
+  margin-left: 2rem;
+  padding-top: 1rem;
+}
+
+.route-text {
+  font-size: .9rem;
+    font-family: "Ruposhi Bangla Uni", sans-serif;
+
+  font-weight: 600;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  margin-left: 0.75rem;
+}
+
+.note-section {
+  background-color: white;
+  padding: 0.5rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.note-section p {
+  color: #dc2626;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+
+  font-size: 0.7rem;
+}
+
+.save-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

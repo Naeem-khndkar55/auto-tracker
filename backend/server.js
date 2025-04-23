@@ -3,6 +3,7 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 const vehicleRoutes = require('./routes/vehicleRoutes');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 const { errorHandler } = require('./middleware/errorMiddleware');
 require('dotenv').config();
 const app = express();
@@ -11,7 +12,8 @@ connectDB();
 
 // CORS setup (allow credentials)
 app.use(cors({ 
-  origin: [process.env.CLIENT_URL], // Frontend URL
+  origin: [process.env.CLIENT_URL,'*'], // Frontend URL
+  //origin: ['*'], // Frontend URL
   credentials: true, 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -21,6 +23,7 @@ app.use(express.json());
 
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/users', userRoutes);
+//app.use('/api/auth', authRoutes);
 
 app.use(errorHandler);
 
