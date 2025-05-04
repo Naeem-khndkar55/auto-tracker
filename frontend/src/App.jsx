@@ -11,8 +11,17 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import VehicleDetails from "./components/VehicleDetails";
-
+import { useMaintenanceCheck } from "./hooks/useMaintenanceCheck";
+import MaintenancePage from "./pages/MaintenancePage";
 const App = () => {
+  const { isMaintenance, loading } = useMaintenanceCheck();
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isMaintenance) {
+    return <MaintenancePage />;
+  }
   return (
     <Router>
       <AuthProvider>

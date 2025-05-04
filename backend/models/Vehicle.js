@@ -7,7 +7,9 @@ const vehicleSchema = new mongoose.Schema({
   ownerImage: { type: String },
   vehicleNumber: { type: String, required: true, unique: true },
   permittedRoute: { type: String, required: true },
-  qrCode: { type: String }
+  qrCode: { type: String },
+  vehicle_type: { type: String },
+  organization: { type: String },
 });
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);

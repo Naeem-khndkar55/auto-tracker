@@ -70,7 +70,7 @@ const PermitCardNew = ({ vehicle, qrCode, onDone }) => {
       <div ref={cardRef}>
         <div className="permit-card">
           <div className="permit-header">
-            <h2>মিশুক মালিক সমিতি</h2>
+            <h2>{vehicle.organization ?? `মিশুক মালিক সমিতি`}</h2>
             <p>কুমিল্লা-৩৫০০</p>
             <div className="qr-wrapper">
               <QRCode isDummy={false} size={240} value={qrCode} />
@@ -80,7 +80,7 @@ const PermitCardNew = ({ vehicle, qrCode, onDone }) => {
           <div className="blue-section">
             <p>যানের পরিচিত নাম্বার</p>
             <h3>{vehicle.vehicleNumber}</h3>
-            <span>গাড়ির ধরনঃ ৩ সিট মিশুক</span>
+            <span>গাড়ির ধরনঃ {vehicle.vehicle_type ?? `৩ সিট মিশুক`}</span>
           </div>
 
           <div className="route-section">

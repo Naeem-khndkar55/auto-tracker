@@ -2,6 +2,10 @@ import { useState } from "react";
 import { addVehicle } from "../services/api";
 import { toast } from "react-toastify";
 
+  const organizations = ["মিশুক মালিক সমিতি", "ইজি বাইক মালিক"];
+  const types = ["৩ সিট মিশুক", "৭ সিট ইজি বাইক"];
+
+
 const AddVehicle = () => {
   const [formData, setFormData] = useState({
     ownerName: "",
@@ -10,6 +14,8 @@ const AddVehicle = () => {
     vehicleNumber: "",
     permittedRoute: "",
     ownerImage: null,
+    vehicle_type:"",
+    organization:"",
   });
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +45,8 @@ const AddVehicle = () => {
         vehicleNumber: "",
         permittedRoute: "",
         ownerImage: null,
+        vehicle_type:"",
+        organization:"",
       });
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add vehicle ❌");
@@ -95,6 +103,34 @@ const AddVehicle = () => {
         className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:border-blue-400 transition duration-200"
         required
       />
+      <select
+        name="organization"
+        value={formData.organization}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:border-blue-400 transition duration-200"
+        required
+      >
+        <option value="">Select Organization</option>
+        {organizations.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+      <select
+        name="vehicle_type"
+        value={formData.vehicle_type}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-md mb-4 focus:border-blue-400 transition duration-200"
+        required
+      >
+        <option value="">Select Vehicle Type</option>
+        {types.map((t) => (
+          <option key={t} value={t}>
+            {t}
+          </option>
+        ))}
+      </select>
 
       {/* ✅ File Upload */}
       <input

@@ -8,7 +8,15 @@ const fs = require('fs');
 const path = require('path');
 // ✅ Add Vehicle
 const addVehicle = async (req, res) => {
-  const { ownerName, phoneNumber,address, vehicleNumber, permittedRoute } = req.body;
+  const {
+    ownerName,
+    phoneNumber,
+    address,
+    vehicleNumber,
+    permittedRoute,
+    vehicle_type,
+    organization,
+  } = req.body;
 
   try {
     let ownerImage = '';
@@ -25,6 +33,8 @@ const addVehicle = async (req, res) => {
       vehicleNumber,
       permittedRoute,
       ownerImage,
+      vehicle_type,
+      organization,
     });
 
     await vehicle.save();
