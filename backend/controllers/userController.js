@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const User = require("../models/User");
 
 const register = async (req, res) => {
   const { username, password } = req.body;
@@ -12,19 +12,19 @@ const register = async (req, res) => {
     const userExists = await User.findOne({ username: cleanedUsername });
 
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(cleanedPassword, 10);
 
     const user = new User({
       username: cleanedUsername,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await user.save();
 
-    res.status(201).json({ message: 'Admin created successfully' });
+    res.status(201).json({ message: "Admin created successfully" });
   } catch (error) {
     console.error(`Registration Error: ${error.message}`);
     res.status(500).json({ message: error.message });
@@ -39,14 +39,17 @@ const login = async (req, res) => {
     const cleanedPassword = password.trim();
 
     const user = await User.findOne({
-      username: { $regex: new RegExp(`^${cleanedUsername}$`, 'i') },
+      username: { $regex: new RegExp(`^${cleanedUsername}$`, "i") },
     });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    const isPasswordMatch = await bcrypt.compare(cleanedPassword, user.password);
+    const isPasswordMatch = await bcrypt.compare(
+      cleanedPassword,
+      user.password
+    );
 
     if (isPasswordMatch) {
       // ✅ Issue token with expiration of 1 hour
@@ -67,7 +70,7 @@ const login = async (req, res) => {
         },
       });
     } else {
-      res.status(401).json({ message: 'Invalid username or password' });
+      res.status(401).json({ message: "Invalid username or password" });
     }
   } catch (error) {
     console.error(`Login Error: ${error.message}`);
@@ -75,4 +78,14 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { login, register };
+const profile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(`Profile Error: ${error.message}`);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { login, register, profile };

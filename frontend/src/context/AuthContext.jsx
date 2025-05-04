@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { getProfile } from "../services/api";
 
 const AuthContext = createContext();
 
@@ -9,10 +10,29 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const checkAuth = async () => {
+      try {
+        res = await getProfile(); // Assume getProfile() returns a Promise
+        console.log("res", res);
+
+        if (res.status == 200) {
+          setUser(true);
+        }
+      } catch (error) {
+        if (
+          (error.response && error.response.status === 401) ||
+          error.response.status !== 200
+        ) {
+          localStorage.removeItem("token");
+          sessionStorage.clear();
+          setUser(false);
+        }
+      }
+    };
     // console.log("Token from storage:", token);
     console.log("nigga Anfh");
     if (token) {
-      setUser(true);
+      checkAuth();
     } else {
       setUser(false);
     }

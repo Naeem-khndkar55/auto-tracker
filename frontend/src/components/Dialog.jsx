@@ -19,17 +19,16 @@ const Dialog = ({ showDialog, closeDialog, vichicle }) => {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-transparent bg-opacity-50 flex items-center justify-center py-[7%] px-[20%]">
-      <div className="bg-white rounded-xl p-6 shadow-lg w-full h-full relative">
-        <button
-          onClick={closeDialog}
-          className="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-xl"
-        >
-          ✕
-        </button>
-
+    <div className="fixed inset-0 z-50 bg-black/40 bg-opacity-80 flex items-center justify-center">
+      <div className="">
         {/* ID Card Preview Here */}
-        <IDCardPreview vehicle={vichicle} qrCode={vichicle.qrCode} onDone={closeDialog} />
+
+        <IDCardPreview
+          vehicle={vichicle}
+          qrCode={vichicle.qrCode}
+          onDone={closeDialog}
+          onClose={closeDialog}
+        />
       </div>
     </div>
   );
