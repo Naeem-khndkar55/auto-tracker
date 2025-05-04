@@ -1,0 +1,64 @@
+sudo nano /etc/nginx/sites-available/auto-tracker-server
+
+
+server {
+    listen 80;
+    server_name cumillavehicle.info www.cumillavehicle.info;
+
+    root /var/www/auto-tracker-server/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:3000;  # Express backend port
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+server {
+    listen 80;
+    server_name cumillavehicle.info www.cumillavehicle.info;
+
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name cumillavehicle.info www.cumillavehicle.info;
+
+    ssl_certificate /etc/letsencrypt/live/cumillavehicle.info/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/cumillavehicle.info/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/cumillavehicle.info/chain.pem;
+
+    root /var/www/auto-tracker/frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+
+
+sudo ln -s /etc/nginx/sites-available/auto-tracker-server /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
