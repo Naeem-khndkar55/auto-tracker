@@ -26,6 +26,7 @@ app.use(express.json());
 app.use(maintenanceMiddleware);
 
 app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/api/vehicles', vehicleRoutes);
 app.use('/api/users', userRoutes);
 app.use("/api/settings", settingsRoutes);
 //app.use('/api/auth', authRoutes);

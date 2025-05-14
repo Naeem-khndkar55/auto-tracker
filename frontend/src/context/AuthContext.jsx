@@ -11,26 +11,26 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const checkAuth = async () => {
-      try {
-        res = await getProfile(); // Assume getProfile() returns a Promise
-        console.log("res", res);
+      console.log("Token from storage:", token);
 
-        if (res.status == 200) {
+      try {
+       const res = await getProfile(); // Assume getProfile() returns a Promise
+        console.log("res", res, "status", res.status);
+
+        if (res.username) {
           setUser(true);
         }
       } catch (error) {
-        if (
-          (error.response && error.response.status === 401) ||
-          error.response.status !== 200
-        ) {
+        if (error.response && error.response.status === 401) {
           localStorage.removeItem("token");
           sessionStorage.clear();
           setUser(false);
         }
+        console.log("Error fetching profile:", error);
+
       }
     };
     // console.log("Token from storage:", token);
-    console.log("nigga Anfh");
     if (token) {
       checkAuth();
     } else {

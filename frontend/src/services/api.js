@@ -53,4 +53,23 @@ export const updateVehicle = async (id, data) => {
 // ✅ Delete Vehicle
 export const deleteVehicle = async (id) => API.delete(`/vehicles/${id}`);
 
-export const getProfile = async () => API.get("/users/profile");
+export const getProfile = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found");
+  }
+  const { data } = await API.get("/users/profile", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return data;
+};
+
+export const fetchVehicles = async ({ queryKey }) => {
+  const [_key, { page, limit, search }] = queryKey;
+  const { data } = await API.get("/vehicles/getAll", {
+    params: { page, limit, search },
+  });
+  return data;
+};

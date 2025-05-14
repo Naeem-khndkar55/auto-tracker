@@ -46,7 +46,7 @@
 
 .permit-card {
   background-color: white;
-  border: 2px solid #e5e7eb;
+  /* border: 2px solid #e5e7eb; */
   overflow: hidden;
 }
 
@@ -60,15 +60,13 @@
   font-size: 1.75rem;
   font-family: "Ruposhi Bangla Uni", sans-serif;
   font-weight: bold;
-  margin-bottom: 0.25rem;
 }
 
 .permit-header p {
   font-size: 1rem;
   font-family: "Ruposhi Bangla Uni", sans-serif;
   font-weight: bold;
-  font-weight: 500;
-  margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .qr-wrapper {
@@ -131,8 +129,8 @@
 }
 
 .route-text {
-  font-size: .9rem;
-    font-family: "Ruposhi Bangla Uni", sans-serif;
+  font-size: 0.9rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
 
   font-weight: 600;
   padding: 0.5rem 0;
@@ -142,7 +140,10 @@
 
 .note-section {
   background-color: white;
-  padding: 0.5rem;
+  font-family: "Ruposhi Bangla Uni", sans-serif;
+  font-weight: 500;
+  font-size: 0.12rem;
+  padding: 0.25rem;
   text-align: center;
   margin-bottom: 0.5rem;
 }
