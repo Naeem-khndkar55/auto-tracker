@@ -10,7 +10,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-64 bg-gray-800 text-white h-screen p-4">
+    <div className="w-64 bg-gray-800 h-full text-white p-4">
       <h2 className="text-2xl font-bold mb-6">Vehicle Info Cumilla</h2>
       <ul>
         <li

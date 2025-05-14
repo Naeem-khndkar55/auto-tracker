@@ -10,3 +10,10 @@
 
 /backend/build
 /frontend/build
+/.DS_Store
+/backend/.DS_Store
+/frontend/.DS_Store
+/.vscode
+/.idea
+/backend/uploads
+/.history

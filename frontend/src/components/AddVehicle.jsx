@@ -2,9 +2,8 @@ import { useState } from "react";
 import { addVehicle } from "../services/api";
 import { toast } from "react-toastify";
 
-  const organizations = ["মিশুক মালিক সমিতি", "ইজি বাইক মালিক"];
-  const types = ["৩ সিট মিশুক", "৭ সিট ইজি বাইক"];
-
+const organizations = ["মিশুক মালিক", "ইজি বাইক মালিক"];
+const types = ["৩ সিট মিশুক", "৭ সিট ইজি বাইক"];
 
 const AddVehicle = () => {
   const [formData, setFormData] = useState({
@@ -14,8 +13,8 @@ const AddVehicle = () => {
     vehicleNumber: "",
     permittedRoute: "",
     ownerImage: null,
-    vehicle_type:"",
-    organization:"",
+    vehicle_type: "",
+    organization: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -45,8 +44,8 @@ const AddVehicle = () => {
         vehicleNumber: "",
         permittedRoute: "",
         ownerImage: null,
-        vehicle_type:"",
-        organization:"",
+        vehicle_type: "",
+        organization: "",
       });
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add vehicle ❌");

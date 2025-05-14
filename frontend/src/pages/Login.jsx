@@ -19,6 +19,8 @@ const Login = () => {
     setLoading(true); // ✅ Start loading state
     try {
       const { data } = await login(formData);
+      console.log("Login response data:", data);
+      localStorage.setItem("token", data.token);
       loginUser(data, navigate);
       toast.success("Login successful!");
     } catch (error) {

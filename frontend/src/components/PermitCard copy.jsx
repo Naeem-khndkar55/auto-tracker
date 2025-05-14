@@ -3,7 +3,7 @@ import QRCode from "../components/QRCode";
 //import "./css/PermitCard.css";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { toCanvas } from "html-to-image"; // Import html-to-image library
-import JSPDF from "jspdf"; // Import jsPDF library
+
 const PermitCardNew = ({ vehicle, qrCode, onDone }) => {
   const cardRef = useRef(null);
 
@@ -25,9 +25,21 @@ const PermitCardNew = ({ vehicle, qrCode, onDone }) => {
         bulueSectionP.setAttribute("style", "border: none !important");
       }
 
+      // const originalCanvas = await html2canvas(cardRef.current, {
+      //   scale,
+      //   useCORS: true,
+      //   scrollX: 0,
+      //   scrollY: 0,
+      //   windowWidth: document.documentElement.offsetWidth,
+      //   windowHeight: document.documentElement.offsetHeight,
+      // });
       const originalCanvas = await toCanvas(cardRef.current, {
-        pixelRatio: scale, // increase to 3 or 4 for better quality
+        pixelRatio: 4, // increase to 3 or 4 for better quality
         cacheBust: true,
+        style: {
+          transform: "scale(3)", // optional, for clearer rendering
+          transformOrigin: "top left",
+        },
       });
 
       const finalCanvas = document.createElement("canvas");
@@ -48,35 +60,12 @@ const PermitCardNew = ({ vehicle, qrCode, onDone }) => {
         targetHeight
       );
 
-      // Convert the canvas to a data URL
-      // const dataUrl = finalCanvas.toDataURL("image/jpeg", 1.0);
-      // Create a new jsPDF instance
-      const pdf = new JSPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: [targetWidth, targetHeight],
-        putOnlyUsedFonts: true,
-        floatPrecision: 16,
-      });
-
-      // Add the image to the PDF
-      pdf.addImage(
-        finalCanvas.toDataURL("image/jpeg", 1.0),
-        "JPEG",
-        0,
-        0,
-        targetWidth,
-        targetHeight
-      );
-      // Save the PDF
-      pdf.save(`${vehicle.vehicleNumber}.pdf`);
-
-      // const image = finalCanvas.toDataURL("image/jpeg");
-      // const link = document.createElement("a");
-      // link.href = image;
-      // //link.href = dataUrl;
-      // link.download = `${vehicle.vehicleNumber}.jpg`;
-      // link.click();
+      const image = finalCanvas.toDataURL("image/jpeg");
+      const link = document.createElement("a");
+      link.href = image;
+      //link.href = dataUrl;
+      link.download = `${vehicle.vehicleNumber}.jpg`;
+      link.click();
       onDone();
     } catch (error) {
       console.error("Error generating image:", error);
@@ -88,7 +77,7 @@ const PermitCardNew = ({ vehicle, qrCode, onDone }) => {
       <div ref={cardRef}>
         <div className="permit-card">
           <div className="permit-header">
-            <h2>{vehicle.organization ?? `মিশুক মালিক`}</h2>
+            <h2>{vehicle.organization ?? `মিশুক মালিক সমিতি`}</h2>
             <p>কুমিল্লা-৩৫০০</p>
             <div className="qr-wrapper">
               <QRCode isDummy={false} size={240} value={qrCode} />

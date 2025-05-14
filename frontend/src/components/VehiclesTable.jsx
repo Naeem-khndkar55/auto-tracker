@@ -1,58 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { getAllVehicles, deleteVehicle } from "../services/api";
+import React, { useState,useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchVehicles, deleteVehicle } from "../services/api";
 import { toast } from "react-toastify";
-import EditVehicle from "./EditVehicle";
-import IDCardPreview from "./IDCardPreview";
 import Dialog from "./Dialog";
+import EditVehicle from "./EditVehicle";
+import { use } from "react";
 
-const VehicleList = () => {
-  const [vehicles, setVehicles] = useState([]);
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
+const VehiclesTable = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  // Dialog state which  the dialog is open or not
   const [showDialog, setShowDialog] = useState(false);
-
-  // ✅ Pagination states
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
-
-  // ✅ Open and close dialog functions
+  const [inputPage, setInputPage] = useState(currentPage);
   const openDialog = () => setShowDialog(true);
-  const closeDialog = () => setShowDialog(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["vehicles", { page: currentPage, limit, search: searchTerm }],
+    queryFn: fetchVehicles,
+    keepPreviousData: true,
+  });
 
-  // ✅ Fetch All Vehicles
-  const fetchData = async () => {
-    try {
-      const response = await getAllVehicles();
-      setVehicles(response.data.vehicles || []);
-      setFilteredVehicles(response.data.vehicles || []);
-      setCurrentPage(1);
-    } catch (error) {
-      toast.error("Failed to load vehicles");
-    }
-  };
-
-  // ✅ Handle Search
-  const handleSearch = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-
-    const filtered = vehicles.filter((vehicle) =>
-      vehicle.ownerName.toLowerCase().includes(term)
-    );
-
-    setFilteredVehicles(filtered);
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
 
-  // ✅ Delete Vehicle
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= data?.pagination?.totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this vehicle?"
@@ -68,14 +48,10 @@ const VehicleList = () => {
       }
     }
   };
-
-  // ✅ Open Edit Modal
   const handleEdit = (vehicle) => {
     setSelectedVehicle(vehicle);
     setIsEditOpen(true);
   };
-
-  // ✅ Handle Vehicle Update (auto-refresh)
   const handleUpdateChange = async (updatedVehicle) => {
     try {
       toast.success("Vehicle updated successfully");
@@ -86,78 +62,76 @@ const VehicleList = () => {
     }
   };
 
-  // ✅ Download QR Code
   const handleDownloadQR = (vehicle) => {
-    
     setSelectedVehicle(vehicle);
 
     openDialog();
   };
 
-  // ✅ Pagination Logic
-  const totalPages = Math.ceil(filteredVehicles.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const currentVehicles = filteredVehicles.slice(
-    startIndex,
-    startIndex + pageSize
-  );
+  const vehicles = data?.vehicles || [];
+  const totalPages = data?.pagination?.totalPages || 1;
+  const startIndex = (currentPage - 1) * limit;
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="min-h-screen mx-auto mt-8">
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
         Vehicle List
       </h2>
-
+      {/* ✅ Search Input */}
       {/* ✅ Search Input */}
       <div className="mb-4 flex justify-center">
         <input
           type="text"
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={handleSearchChange}
           placeholder="Search by owner name..."
           className="w-full max-w-[400px] p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400 transition"
         />
       </div>
 
-      {/* ✅ Styled Table */}
+      {/* ✅ Table */}
       <div className="overflow-x-auto">
         <table className="w-full border border-gray-300 shadow-md rounded-lg">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                S/N
-              </th>
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                Owner Name
-              </th>
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                Phone Number
-              </th>
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                Address
-              </th>
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                Vehicle Number
-              </th>
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                Permitted Route
-              </th>
-              <th className="border p-3 text-left font-semibold text-gray-700">
-                Actions
-              </th>
+              {[
+                "S/N",
+                "Owner Name",
+                "Phone Number",
+                "Address",
+                "Vehicle Number",
+                "Permitted Route",
+                "Actions",
+              ].map((header) => (
+                <th
+                  key={header}
+                  className="border p-3 text-left font-semibold text-gray-700"
+                >
+                  {header}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {currentVehicles.length > 0 ? (
-              currentVehicles.map((vehicle, index) => (
+            {isLoading ? (
+              <tr>
+                <td colSpan="7" className="text-center p-3">
+                  Loading...
+                </td>
+              </tr>
+            ) : isError ? (
+              <tr>
+                <td colSpan="7" className="text-center p-3 text-red-500">
+                  Failed to fetch vehicles.
+                </td>
+              </tr>
+            ) : vehicles.length > 0 ? (
+              vehicles.map((vehicle, index) => (
                 <tr key={vehicle._id} className="hover:bg-gray-50">
-                  {/* ✅ Serial Number */}
                   <td className="border p-3 text-gray-800">
                     {startIndex + index + 1}
                   </td>
@@ -177,23 +151,20 @@ const VehicleList = () => {
                     {vehicle.permittedRoute}
                   </td>
                   <td className="border p-3 flex gap-2">
-                    {/* ✅ Edit Button */}
                     <button
-                      className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600 transition"
+                      className="bg-blue-500 text-white px-4 py-1 rounded-md"
                       onClick={() => handleEdit(vehicle)}
                     >
                       Edit
                     </button>
-                    {/* ✅ Delete Button */}
                     <button
-                      className="bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600 transition"
+                      className="bg-red-500 text-white px-4 py-1 rounded-md"
                       onClick={() => handleDelete(vehicle._id)}
                     >
                       Delete
                     </button>
-                    {/* ✅ QR Code Button (Restored) */}
                     <button
-                      className="bg-green-500 text-white px-4 py-1 rounded-md hover:bg-green-600 transition"
+                      className="bg-green-500 text-white px-4 py-1 rounded-md"
                       onClick={() => handleDownloadQR(vehicle)}
                     >
                       QR Code
@@ -203,10 +174,7 @@ const VehicleList = () => {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="6"
-                  className="border p-3 text-center text-gray-500"
-                >
+                <td colSpan="7" className="text-center p-3 text-gray-500">
                   No vehicles found.
                 </td>
               </tr>
@@ -215,8 +183,28 @@ const VehicleList = () => {
         </table>
       </div>
 
-      {/* ✅ Pagination Controls */}
-      <div className="mt-4 flex justify-center gap-2">
+      {/* ✅ Pagination */}
+      <div className="mt-4 pb-4 flex justify-end items-center gap-2">
+        {/* Go To Page Input */}
+        <div className="flex items-center gap-2">
+          <span className="text-gray-600">Go to page:</span>
+          <input
+            type="number"
+            min="1"
+            max={totalPages}
+            value={inputPage}
+            onChange={(e) => setInputPage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const page = parseInt(inputPage);
+                if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                  handlePageChange(page);
+                }
+              }
+            }}
+            className="w-16 px-2 py-1 border border-gray-300 rounded-md"
+          />
+        </div>
         <button
           className={`px-4 py-2 rounded-md ${
             currentPage === 1 ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-600"
@@ -226,9 +214,14 @@ const VehicleList = () => {
         >
           Previous
         </button>
-        <span className="text-gray-700 font-medium px-2">
+        {/* <span className="text-gray-700 font-medium px-2">
           {currentPage} / {totalPages}
+        </span> */}
+        {/* Page Count */}
+        <span className="text-gray-800 font-medium">
+          Page {currentPage} of {totalPages}
         </span>
+
         <button
           className={`px-4 py-2 rounded-md ${
             currentPage === totalPages
@@ -259,4 +252,4 @@ const VehicleList = () => {
   );
 };
 
-export default VehicleList;
+export default VehiclesTable;
