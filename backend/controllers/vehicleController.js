@@ -226,6 +226,7 @@ const uploadExcel = async (req, res) => {
       const batch = data.slice(i, i + BATCH_SIZE);
       //await Vehicle.insertMany(batch);
       for (let vehicleData of batch) {
+
         const vehicle = new Vehicle({
           ownerName: vehicleData.ownerName,
           phoneNumber: vehicleData.phoneNumber,
@@ -235,6 +236,12 @@ const uploadExcel = async (req, res) => {
           organization: vehicleData.organization,
           vehicle_type: vehicleData.vehicle_type,
         });
+        await vehicle.save();
+        
+        const qrData = `${BASE_URL}/api/vehicles/${vehicle._id}`;
+        const qrCodeUrl = await QRCode.toDataURL(qrData);
+
+        vehicle.qrCode = qrCodeUrl;
         await vehicle.save();
       }
       console.log(`Inserted batch ${i / BATCH_SIZE + 1}`);
