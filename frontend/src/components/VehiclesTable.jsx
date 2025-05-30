@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchVehicles, deleteVehicle } from "../services/api";
 import { toast } from "react-toastify";
@@ -62,10 +62,17 @@ const VehiclesTable = () => {
     }
   };
 
-  const handleDownloadQR = (vehicle) => {
-    setSelectedVehicle(vehicle);
+  const handleDownloadQR = (vehicle, index) => {
+    const qrCode = vehicle.qrCode;
 
-    openDialog();
+    // Create a link element
+    const link = document.createElement("a");
+    // Set href to the base64 data
+    link.href = `${qrCode}`;
+    link.download = `${startIndex + index + 1}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const vehicles = data?.vehicles || [];
@@ -165,7 +172,7 @@ const VehiclesTable = () => {
                     </button>
                     <button
                       className="bg-green-500 text-white px-4 py-1 rounded-md"
-                      onClick={() => handleDownloadQR(vehicle)}
+                      onClick={() => handleDownloadQR(vehicle, index)}
                     >
                       QR Code
                     </button>

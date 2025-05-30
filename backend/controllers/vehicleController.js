@@ -5,6 +5,7 @@ const XLSX = require("xlsx");
 require("dotenv").config();
 
 const BASE_URL = process.env.BASE_URL; // ✅ Use machine IP
+const CLIENT_URL = process.env.CLIENT_URL; // ✅ Use machine IP
 const fs = require("fs");
 const path = require("path");
 const BATCH_SIZE = 1000;
@@ -42,7 +43,7 @@ const addVehicle = async (req, res) => {
     await vehicle.save();
 
     // ✅ Generate QR Code with API URL
-    const qrData = `${BASE_URL}/api/vehicles/${vehicle._id}`;
+    const qrData = `${CLIENT_URL}/api/vehicles/${vehicle._id}`;
     const qrCodeUrl = await QRCode.toDataURL(qrData);
 
     vehicle.qrCode = qrCodeUrl;
@@ -238,7 +239,7 @@ const uploadExcel = async (req, res) => {
         });
         await vehicle.save();
         
-        const qrData = `${BASE_URL}/api/vehicles/${vehicle._id}`;
+        const qrData = `${CLIENT_URL}/api/vehicles/${vehicle._id}`;
         const qrCodeUrl = await QRCode.toDataURL(qrData);
 
         vehicle.qrCode = qrCodeUrl;
