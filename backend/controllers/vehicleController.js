@@ -145,6 +145,32 @@ const getVehicleById = async (req, res) => {
   }
 };
 
+// ✅ Get Vehicle Details (JSON API)
+const getVehicleDetails = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id);
+    
+    if (!vehicle) {
+      return res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
+    }
+
+    // Return vehicle data as JSON
+    res.status(200).json({
+      success: true,
+      data: vehicle,
+    });
+  } catch (error) {
+    console.error(`Error fetching vehicle details: ${error.message}`);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch vehicle details",
+    });
+  }
+};
+
 // ✅ Update Vehicle
 const updateVehicle = async (req, res) => {
   const { ownerName, phoneNumber, address, vehicleNumber, permittedRoute } =
@@ -354,6 +380,7 @@ module.exports = {
   addVehicle,
   getAllVehicles,
   getVehicleById,
+  getVehicleDetails,
   updateVehicle,
   deleteVehicle,
   uploadExcel,

@@ -4,6 +4,7 @@ const {
   getAllVehicles,
   deleteVehicle,
   getVehicleById,
+  getVehicleDetails,
   updateVehicle,
   uploadExcel,
   updateExistingVehiclesStatus,
@@ -14,6 +15,7 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 router.get("/getAll", protect, getAllVehicles);
+router.get("/:id/details", getVehicleDetails);
 router.get("/:id", getVehicleById);
 router.put("/:id", protect, upload.single("ownerImage"), updateVehicle);
 router.patch("/:id/status", protect, updateVehicleStatus);
