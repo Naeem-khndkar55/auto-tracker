@@ -145,7 +145,7 @@ const VehiclesTable = () => {
         {/* Table Section */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[1000px]">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
                   {[
@@ -160,7 +160,9 @@ const VehiclesTable = () => {
                   ].map((header) => (
                     <th
                       key={header}
-                      className="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider"
+                      className={`px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider ${
+                        header === "Actions" ? "sticky right-0 bg-gradient-to-r from-blue-600 to-blue-700 z-10 min-w-[220px]" : ""
+                      }`}
                     >
                       {header}
                     </th>
@@ -256,14 +258,16 @@ const VehiclesTable = () => {
                           {vehicle.status === "active" ? "Active" : "Inactive"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex gap-2">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky right-0 bg-white z-10 min-w-[220px]">
+                        <div className="flex flex-wrap gap-2">
+                          {/* Edit Button */}
                           <button
                             onClick={() => handleEdit(vehicle)}
-                            className="inline-flex items-center px-3 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors duration-200 text-xs font-medium"
+                            className="inline-flex items-center justify-center px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 text-xs font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+                            title="Edit Vehicle"
                           >
                             <svg
-                              className="w-4 h-4 mr-1"
+                              className="w-4 h-4 mr-1.5"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -275,14 +279,17 @@ const VehiclesTable = () => {
                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                               />
                             </svg>
-                            Edit
+                            <span className="hidden sm:inline">Edit</span>
                           </button>
+
+                          {/* Delete Button */}
                           <button
                             onClick={() => handleDelete(vehicle._id)}
-                            className="inline-flex items-center px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 transition-colors duration-200 text-xs font-medium"
+                            className="inline-flex items-center justify-center px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 text-xs font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+                            title="Delete Vehicle"
                           >
                             <svg
-                              className="w-4 h-4 mr-1"
+                              className="w-4 h-4 mr-1.5"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -294,14 +301,17 @@ const VehiclesTable = () => {
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                               />
                             </svg>
-                            Delete
+                            <span className="hidden sm:inline">Delete</span>
                           </button>
+
+                          {/* QR Code Download Button */}
                           <button
                             onClick={() => handleDownloadQR(vehicle, index)}
-                            className="inline-flex items-center px-3 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-colors duration-200 text-xs font-medium"
+                            className="inline-flex items-center justify-center px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 text-xs font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+                            title="Download QR Code"
                           >
                             <svg
-                              className="w-4 h-4 mr-1"
+                              className="w-4 h-4 mr-1.5"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -313,7 +323,7 @@ const VehiclesTable = () => {
                                 d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
                               />
                             </svg>
-                            QR
+                            <span className="hidden sm:inline">QR Code</span>
                           </button>
                         </div>
                       </td>
