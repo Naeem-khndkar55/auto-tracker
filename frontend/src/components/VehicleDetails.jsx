@@ -143,7 +143,7 @@ const VehicleDetails = () => {
                     <img
                       src={vehicle.ownerImage}
                       alt="Owner"
-                      className="w-full h-96 object-cover"
+                      className="w-full h-96 object-contain"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
