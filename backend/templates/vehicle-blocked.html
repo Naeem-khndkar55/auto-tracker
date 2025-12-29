@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vehicle Temporarily Blocked</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-color: #dc2626;
+        --secondary-color: #ef4444;
+        --accent-color: #fca5a5;
+        --background-color: #fef2f2;
+        --text-color: #1f2937;
+        --light-gray: #e5e7eb;
+        --warning-color: #f59e0b;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--background-color) 0%,
+          #fee2e2 100%
+        );
+        color: var(--text-color);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background: linear-gradient(
+          145deg,
+          #ffffff 0%,
+          #fef2f2 100%
+        );
+        padding: 48px 32px;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(220, 38, 38, 0.15),
+          0 0 0 1px rgba(220, 38, 38, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+        animation: slideIn 0.5s ease-out;
+        border: 2px solid var(--primary-color);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color),
+          var(--secondary-color),
+          var(--warning-color)
+        );
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .icon-container {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 24px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 32px rgba(220, 38, 38, 0.3);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .icon {
+        width: 60px;
+        height: 60px;
+        color: white;
+        stroke-width: 2.5;
+      }
+
+      h1 {
+        color: var(--primary-color);
+        font-size: 32px;
+        margin-bottom: 16px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        color: var(--text-color);
+        font-size: 18px;
+        margin-bottom: 32px;
+        font-weight: 500;
+        opacity: 0.9;
+      }
+
+      .message-box {
+        background: linear-gradient(
+          135deg,
+          #fee2e2 0%,
+          #fecaca 100%
+        );
+        padding: 24px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        border-left: 4px solid var(--primary-color);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+      }
+
+      .message-box p {
+        color: var(--text-color);
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 12px;
+      }
+
+      .message-box p:last-child {
+        margin-bottom: 0;
+      }
+
+      .vehicle-info {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        border: 1px solid var(--light-gray);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .vehicle-info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--light-gray);
+      }
+
+      .vehicle-info-item:last-child {
+        border-bottom: none;
+      }
+
+      .vehicle-info-label {
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 14px;
+      }
+
+      .vehicle-info-value {
+        color: #6b7280;
+        font-size: 14px;
+        text-align: right;
+      }
+
+      .contact-info {
+        background: linear-gradient(
+          135deg,
+          #fef3c7 0%,
+          #fde68a 100%
+        );
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 24px;
+        border-left: 4px solid var(--warning-color);
+      }
+
+      .contact-info p {
+        color: var(--text-color);
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .footer {
+        margin-top: 32px;
+        font-size: 12px;
+        color: #9ca3af;
+        border-top: 1px solid var(--light-gray);
+        padding-top: 16px;
+        font-weight: 400;
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 480px) {
+        .container {
+          padding: 32px 24px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        .subtitle {
+          font-size: 16px;
+        }
+
+        .icon-container {
+          width: 100px;
+          height: 100px;
+        }
+
+        .icon {
+          width: 50px;
+          height: 50px;
+        }
+
+        .message-box,
+        .vehicle-info,
+        .contact-info {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="icon-container">
+        <svg
+          class="icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+        </svg>
+      </div>
+
+      <h1>Vehicle Temporarily Blocked</h1>
+      <p class="subtitle">This vehicle is currently unavailable</p>
+
+      <div class="message-box">
+        <p>
+          <strong>Notice:</strong> This vehicle has been temporarily blocked and
+          is not available for use at this time.
+        </p>
+        <p>
+          Please contact the administration for more information or to resolve
+          this issue.
+        </p>
+      </div>
+
+      <div class="vehicle-info">
+        <div class="vehicle-info-item">
+          <span class="vehicle-info-label">Vehicle Number:</span>
+          <span class="vehicle-info-value">{{vehicleNumber}}</span>
+        </div>
+        <div class="vehicle-info-item">
+          <span class="vehicle-info-label">Owner Name:</span>
+          <span class="vehicle-info-value">{{ownerName}}</span>
+        </div>
+        <div class="vehicle-info-item">
+          <span class="vehicle-info-label">Status:</span>
+          <span class="vehicle-info-value" style="color: var(--primary-color); font-weight: 600;">INACTIVE</span>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <p>
+          <strong>Need Assistance?</strong><br />
+          If you believe this is an error or need to reactivate this vehicle,
+          please contact the system administrator.
+        </p>
+      </div>
+
+      <div class="footer">
+        © 2025 Vehicle Info Cumilla. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>
+

@@ -10,6 +10,7 @@ const vehicleSchema = new mongoose.Schema({
   qrCode: { type: String },
   vehicle_type: { type: String },
   organization: { type: String },
+  status: { type: String, default: 'active' },
 });
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema);
