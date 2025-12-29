@@ -351,7 +351,7 @@ const VehiclesTable = () => {
                   vehicles.map((vehicle, index) => (
                     <tr
                       key={vehicle._id}
-                      className="hover:bg-blue-50 transition-colors duration-150"
+                      className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all duration-150 border-b border-gray-100"
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {startIndex + index + 1}
@@ -419,34 +419,7 @@ const VehiclesTable = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky right-0 bg-white z-10">
-                        <div className="flex items-center gap-3 menu-container relative">
-                          {/* Status Toggle */}
-                          <div className="flex items-center gap-3">
-                            <button
-                              onClick={() => handleStatusToggle(vehicle)}
-                              disabled={updatingStatus === vehicle._id}
-                              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md hover:shadow-lg ${
-                                vehicle.status === "active"
-                                  ? "bg-gradient-to-r from-green-500 to-green-600 focus:ring-green-500"
-                                  : "bg-gradient-to-r from-gray-300 to-gray-400 focus:ring-gray-400"
-                              } ${updatingStatus === vehicle._id ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:scale-105"}`}
-                              title={`Click to ${vehicle.status === "active" ? "deactivate" : "activate"} vehicle`}
-                            >
-                              {updatingStatus === vehicle._id && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                </div>
-                              )}
-                              <span
-                                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-all duration-300 ${
-                                  vehicle.status === "active"
-                                    ? "translate-x-6"
-                                    : "translate-x-1"
-                                } ${updatingStatus === vehicle._id ? "opacity-0" : "opacity-100"}`}
-                              />
-                            </button>
-                          </div>
-
+                        <div className="flex items-center justify-end menu-container relative">
                           {/* 3-Dot Menu Button */}
                           <div className="relative">
                             <button
@@ -454,11 +427,15 @@ const VehiclesTable = () => {
                                 e.stopPropagation();
                                 setOpenMenuId(openMenuId === vehicle._id ? null : vehicle._id);
                               }}
-                              className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              className={`p-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                openMenuId === vehicle._id
+                                  ? "bg-blue-100 text-blue-600"
+                                  : "hover:bg-gray-100 text-gray-600"
+                              }`}
                               title="Actions Menu"
                             >
                               <svg
-                                className="w-5 h-5 text-gray-600"
+                                className="w-5 h-5"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -468,113 +445,131 @@ const VehiclesTable = () => {
 
                             {/* Dropdown Menu */}
                             {openMenuId === vehicle._id && (
-                              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50 py-1">
-                                {/* View */}
-                                <button
-                                  onClick={() => {
-                                    navigate(`/vehicles/${vehicle._id}`);
-                                    setOpenMenuId(null);
-                                  }}
-                                  className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex items-center gap-2 transition-colors duration-150"
-                                >
-                                  <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                                {/* Menu Header */}
+                                <div className="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</p>
+                                </div>
+                                
+                                <div className="py-1">
+                                  {/* View */}
+                                  <button
+                                    onClick={() => {
+                                      navigate(`/vehicles/${vehicle._id}`);
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-3 transition-all duration-150 group"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                    />
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                    />
-                                  </svg>
-                                  View Details
-                                </button>
+                                    <div className="w-8 h-8 rounded-lg bg-purple-100 group-hover:bg-purple-200 flex items-center justify-center transition-colors">
+                                      <svg
+                                        className="w-4 h-4 text-purple-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2.5}
+                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                        />
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2.5}
+                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <span>View Details</span>
+                                  </button>
 
-                                {/* Edit */}
-                                <button
-                                  onClick={() => {
-                                    handleEdit(vehicle);
-                                    setOpenMenuId(null);
-                                  }}
-                                  className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 flex items-center gap-2 transition-colors duration-150"
-                                >
-                                  <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                  {/* Edit */}
+                                  <button
+                                    onClick={() => {
+                                      handleEdit(vehicle);
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-3 transition-all duration-150 group"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                    />
-                                  </svg>
-                                  Edit Vehicle
-                                </button>
+                                    <div className="w-8 h-8 rounded-lg bg-blue-100 group-hover:bg-blue-200 flex items-center justify-center transition-colors">
+                                      <svg
+                                        className="w-4 h-4 text-blue-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2.5}
+                                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <span>Edit Vehicle</span>
+                                  </button>
 
-                                {/* Delete */}
-                                <button
-                                  onClick={() => {
-                                    handleDelete(vehicle._id, vehicle.ownerName);
-                                    setOpenMenuId(null);
-                                  }}
-                                  className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 flex items-center gap-2 transition-colors duration-150"
-                                >
-                                  <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                  {/* QR Code */}
+                                  <button
+                                    onClick={() => {
+                                      if (vehicle.qrCode) {
+                                        handleDownloadQR(vehicle, index);
+                                        toast.success("QR Code downloaded successfully");
+                                      } else {
+                                        toast.warning("QR Code not available for this vehicle");
+                                      }
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-green-700 flex items-center gap-3 transition-all duration-150 group"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                  Delete Vehicle
-                                </button>
+                                    <div className="w-8 h-8 rounded-lg bg-green-100 group-hover:bg-green-200 flex items-center justify-center transition-colors">
+                                      <svg
+                                        className="w-4 h-4 text-green-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2.5}
+                                          d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <span>Download QR Code</span>
+                                  </button>
 
-                                {/* QR Code */}
-                                <button
-                                  onClick={() => {
-                                    if (vehicle.qrCode) {
-                                      handleDownloadQR(vehicle, index);
-                                      toast.success("QR Code downloaded successfully");
-                                    } else {
-                                      toast.warning("QR Code not available for this vehicle");
-                                    }
-                                    setOpenMenuId(null);
-                                  }}
-                                  className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-green-50 hover:text-green-600 flex items-center gap-2 transition-colors duration-150"
-                                >
-                                  <svg
-                                    className="w-4 h-4"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                  {/* Divider */}
+                                  <div className="my-1 border-t border-gray-200"></div>
+
+                                  {/* Delete */}
+                                  <button
+                                    onClick={() => {
+                                      handleDelete(vehicle._id, vehicle.ownerName);
+                                      setOpenMenuId(null);
+                                    }}
+                                    className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3 transition-all duration-150 group"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-                                    />
-                                  </svg>
-                                  Download QR Code
-                                </button>
+                                    <div className="w-8 h-8 rounded-lg bg-red-100 group-hover:bg-red-200 flex items-center justify-center transition-colors">
+                                      <svg
+                                        className="w-4 h-4 text-red-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2.5}
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                        />
+                                      </svg>
+                                    </div>
+                                    <span>Delete Vehicle</span>
+                                  </button>
+                                </div>
                               </div>
                             )}
                           </div>
