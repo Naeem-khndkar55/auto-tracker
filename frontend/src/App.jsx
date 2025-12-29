@@ -51,7 +51,22 @@ const App = () => {
           </Routes>
 
           {/* ✅ Global Toast Notifications */}
-          <ToastContainer position="top-right" autoClose={3000} />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            style={{
+              top: "20px",
+              right: "20px",
+            }}
+          />
         </AuthProvider>
       </QueryClientProvider>
     </Router>

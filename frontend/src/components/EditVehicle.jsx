@@ -59,22 +59,52 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
 
     try {
       const updatedVehicle = await updateVehicle(vehicleData._id, formData);
-      toast.success("Vehicle updated successfully");
+      toast.success("✅ Vehicle Updated Successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: {
+          background: "linear-gradient(to right, #3b82f6, #2563eb)",
+          color: "#fff",
+          fontWeight: "600",
+          fontSize: "14px",
+          borderRadius: "12px",
+          padding: "16px",
+        },
+      });
 
       // ✅ Trigger state update in parent component
       onUpdate(updatedVehicle);
 
       onClose(); // ✅ Close modal after success
     } catch (error) {
-      toast.error("Failed to update vehicle");
+      toast.error("❌ Failed to Update Vehicle", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: {
+          background: "linear-gradient(to right, #ef4444, #dc2626)",
+          color: "#fff",
+          fontWeight: "600",
+          fontSize: "14px",
+          borderRadius: "12px",
+          padding: "16px",
+        },
+      });
     }
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative" onClick={(e) => e.stopPropagation()}>
         {/* ✅ Close Button */}
         <button
           onClick={onClose}

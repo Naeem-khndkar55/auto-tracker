@@ -34,8 +34,11 @@ export const addVehicle = async (data) => {
   return API.post("/vehicles/add", formData);
 };
 
-// ✅ Get Vehicle by ID
+// ✅ Get Vehicle by ID (HTML)
 export const getVehicleById = async (id) => API.get(`/vehicles/${id}`);
+
+// ✅ Get Vehicle Details (JSON API)
+export const getVehicleDetails = async (id) => API.get(`/vehicles/${id}/details`);
 
 // ✅ Update Vehicle
 export const updateVehicle = async (id, data) => {
