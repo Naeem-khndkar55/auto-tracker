@@ -1,7 +1,7 @@
 const Vehicle = require("../models/Vehicle");
 const QRCode = require("qrcode");
 const cloudinary = require("../utils/cloudinary");
-const XLSX = require("xlsx");
+const ExcelJS = require("exceljs");
 require("dotenv").config();
 
 const BASE_URL = process.env.BASE_URL; // ✅ Use machine IP
@@ -103,7 +103,26 @@ const getVehicleById = async (req, res) => {
       return res.status(404).send("<h2>Vehicle not found</h2>");
     }
 
-    // ✅ Read the HTML template
+    // ✅ Check if vehicle status is inactive
+    if (vehicle.status === "inactive") {
+      // ✅ Read the blocked vehicle template
+      const blockedTemplatePath = path.join(
+        __dirname,
+        "../templates/vehicle-blocked.html"
+      );
+      let blockedHtml = fs.readFileSync(blockedTemplatePath, "utf8");
+
+      // ✅ Replace placeholders with actual data
+      blockedHtml = blockedHtml
+        .replace("{{vehicleNumber}}", vehicle.vehicleNumber || "N/A")
+        .replace("{{ownerName}}", vehicle.ownerName || "N/A");
+
+      // ✅ Send the blocked HTML response
+      res.setHeader("Content-Type", "text/html");
+      return res.send(blockedHtml);
+    }
+
+    // ✅ Read the HTML template for active vehicles
     const templatePath = path.join(__dirname, "../templates/vehicle.html");
     let html = fs.readFileSync(templatePath, "utf8");
 
@@ -212,13 +231,53 @@ const updatedVehicleByOriginized = async (req, res) => {
   }
 };
 
+const updateExistingVehiclesStatus = async (req, res) => {
+  try {
+    // Update all vehicles that don't have a status field or have null/undefined status
+    const result = await Vehicle.updateMany(
+      { $or: [{ status: { $exists: false } }, { status: null }, { status: "" }] },
+      { $set: { status: "active" } }
+    );
+
+    res.status(200).json({
+      message: "Existing vehicles status updated successfully",
+      updatedCount: result.modifiedCount,
+      matchedCount: result.matchedCount,
+    });
+  } catch (error) {
+    console.error(`❌ Error updating vehicles status: ${error.message}`);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const uploadExcel = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-    const workbook = XLSX.readFile(req.file.path);
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(sheet);
+    
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(req.file.path);
+    const worksheet = workbook.worksheets[0];
+
+    // Get headers from first row
+    const headers = [];
+    worksheet.getRow(1).eachCell((cell) => {
+      headers.push(cell.value);
+    });
+
+    // Convert rows to JSON
+    const data = [];
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) return; // Skip header row
+      
+      const rowData = {};
+      row.eachCell((cell, colNumber) => {
+        const header = headers[colNumber - 1];
+        if (header) {
+          rowData[header] = cell.value;
+        }
+      });
+      data.push(rowData);
+    });
 
     console.log(`Total rows: ${data.length}`);
 
@@ -258,6 +317,39 @@ const uploadExcel = async (req, res) => {
   }
 };
 
+// ✅ Update Vehicle Status (active/inactive)
+const updateVehicleStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Validate status value
+    if (!status || !["active", "inactive"].includes(status)) {
+      return res.status(400).json({
+        message: "Status must be either 'active' or 'inactive'",
+      });
+    }
+
+    const vehicle = await Vehicle.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    }
+
+    res.status(200).json({
+      message: `Vehicle status updated to ${status} successfully`,
+      vehicle,
+    });
+  } catch (error) {
+    console.error(`❌ Error updating vehicle status: ${error.message}`);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addVehicle,
   getAllVehicles,
@@ -265,4 +357,6 @@ module.exports = {
   updateVehicle,
   deleteVehicle,
   uploadExcel,
+  updateExistingVehiclesStatus,
+  updateVehicleStatus,
 };

@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchVehicles, deleteVehicle } from "../services/api";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import {
+  deleteVehicle,
+  fetchVehicles,
+  updateVehicleStatus,
+} from "../services/api";
 import Dialog from "./Dialog";
 import EditVehicle from "./EditVehicle";
-import { use } from "react";
 
 const VehiclesTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,7 +17,7 @@ const VehiclesTable = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [inputPage, setInputPage] = useState(currentPage);
-  const openDialog = () => setShowDialog(true);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["vehicles", { page: currentPage, limit, search: searchTerm }],
@@ -42,22 +45,39 @@ const VehiclesTable = () => {
       try {
         await deleteVehicle(id);
         toast.success("Vehicle deleted successfully");
-        fetchData();
-      } catch (error) {
+        refetch();
+      } catch {
         toast.error("Failed to delete vehicle");
       }
+    }
+  };
+
+  const handleStatusToggle = async (vehicle) => {
+    const newStatus = vehicle.status === "active" ? "inactive" : "active";
+    setUpdatingStatus(vehicle._id);
+
+    try {
+      await updateVehicleStatus(vehicle._id, newStatus);
+      toast.success(
+        `Vehicle status updated to ${newStatus === "active" ? "Active" : "Inactive"}`
+      );
+      refetch();
+    } catch {
+      toast.error("Failed to update vehicle status");
+    } finally {
+      setUpdatingStatus(null);
     }
   };
   const handleEdit = (vehicle) => {
     setSelectedVehicle(vehicle);
     setIsEditOpen(true);
   };
-  const handleUpdateChange = async (updatedVehicle) => {
+  const handleUpdateChange = async () => {
     try {
       toast.success("Vehicle updated successfully");
-      await fetchData();
+      refetch();
       setIsEditOpen(false);
-    } catch (error) {
+    } catch {
       toast.error("Failed to update vehicle");
     }
   };
@@ -84,162 +104,317 @@ const VehiclesTable = () => {
   }, [currentPage]);
 
   return (
-    <div className="min-h-screen mx-auto mt-8">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-        Vehicle List
-      </h2>
-      {/* ✅ Search Input */}
-      {/* ✅ Search Input */}
-      <div className="mb-4 flex justify-center">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search by owner name..."
-          className="w-full max-w-[400px] p-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-400 transition"
-        />
-      </div>
-
-      {/* ✅ Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border border-gray-300 shadow-md rounded-lg">
-          <thead>
-            <tr className="bg-gray-100">
-              {[
-                "S/N",
-                "Owner Name",
-                "Phone Number",
-                "Address",
-                "Vehicle Number",
-                "Permitted Route",
-                "Actions",
-              ].map((header) => (
-                <th
-                  key={header}
-                  className="border p-3 text-left font-semibold text-gray-700"
-                >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan="7" className="text-center p-3">
-                  Loading...
-                </td>
-              </tr>
-            ) : isError ? (
-              <tr>
-                <td colSpan="7" className="text-center p-3 text-red-500">
-                  Failed to fetch vehicles.
-                </td>
-              </tr>
-            ) : vehicles.length > 0 ? (
-              vehicles.map((vehicle, index) => (
-                <tr key={vehicle._id} className="hover:bg-gray-50">
-                  <td className="border p-3 text-gray-800">
-                    {startIndex + index + 1}
-                  </td>
-                  <td className="border p-3 text-gray-800">
-                    {vehicle.ownerName}
-                  </td>
-                  <td className="border p-3 text-gray-800">
-                    {vehicle.phoneNumber}
-                  </td>
-                  <td className="border p-3 text-gray-800">
-                    {vehicle.address}
-                  </td>
-                  <td className="border p-3 text-gray-800">
-                    {vehicle.vehicleNumber}
-                  </td>
-                  <td className="border p-3 text-gray-800">
-                    {vehicle.permittedRoute}
-                  </td>
-                  <td className="border p-3 flex gap-2">
-                    <button
-                      className="bg-blue-500 text-white px-4 py-1 rounded-md"
-                      onClick={() => handleEdit(vehicle)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 text-white px-4 py-1 rounded-md"
-                      onClick={() => handleDelete(vehicle._id)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="bg-green-500 text-white px-4 py-1 rounded-md"
-                      onClick={() => handleDownloadQR(vehicle, index)}
-                    >
-                      QR Code
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center p-3 text-gray-500">
-                  No vehicles found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ✅ Pagination */}
-      <div className="mt-4 pb-4 flex justify-end items-center gap-2">
-        {/* Go To Page Input */}
-        <div className="flex items-center gap-2">
-          <span className="text-gray-600">Go to page:</span>
-          <input
-            type="number"
-            min="1"
-            max={totalPages}
-            value={inputPage}
-            onChange={(e) => setInputPage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                const page = parseInt(inputPage);
-                if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                  handlePageChange(page);
-                }
-              }
-            }}
-            className="w-16 px-2 py-1 border border-gray-300 rounded-md"
-          />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 py-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+            Vehicle Management
+          </h2>
+          <p className="text-gray-600">Manage and monitor all vehicles</p>
         </div>
-        <button
-          className={`px-4 py-2 rounded-md ${
-            currentPage === 1 ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-600"
-          } text-white`}
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        {/* <span className="text-gray-700 font-medium px-2">
-          {currentPage} / {totalPages}
-        </span> */}
-        {/* Page Count */}
-        <span className="text-gray-800 font-medium">
-          Page {currentPage} of {totalPages}
-        </span>
 
-        <button
-          className={`px-4 py-2 rounded-md ${
-            currentPage === totalPages
-              ? "bg-gray-300"
-              : "bg-blue-500 hover:bg-blue-600"
-          } text-white`}
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
+        {/* Search Section */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <div className="flex justify-center">
+            <div className="relative w-full max-w-md">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder="Search by owner name, phone, vehicle number..."
+                className="w-full px-4 py-3 pl-12 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+              />
+              <svg
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Table Section */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                  {[
+                    "S/N",
+                    "Owner Name",
+                    "Phone Number",
+                    "Address",
+                    "Vehicle Number",
+                    "Permitted Route",
+                    "Status",
+                    "Actions",
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {isLoading ? (
+                  <tr>
+                    <td
+                      colSpan="8"
+                      className="px-6 py-12 text-center text-gray-500"
+                    >
+                      <div className="flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <span className="ml-3">Loading vehicles...</span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : isError ? (
+                  <tr>
+                    <td
+                      colSpan="8"
+                      className="px-6 py-12 text-center text-red-500"
+                    >
+                      <div className="flex flex-col items-center">
+                        <svg
+                          className="w-12 h-12 mb-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        Failed to fetch vehicles. Please try again.
+                      </div>
+                    </td>
+                  </tr>
+                ) : vehicles.length > 0 ? (
+                  vehicles.map((vehicle, index) => (
+                    <tr
+                      key={vehicle._id}
+                      className="hover:bg-blue-50 transition-colors duration-150"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {startIndex + index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+                        {vehicle.ownerName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        {vehicle.phoneNumber}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">
+                        {vehicle.address}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                        {vehicle.vehicleNumber}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">
+                        {vehicle.permittedRoute}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => handleStatusToggle(vehicle)}
+                          disabled={updatingStatus === vehicle._id}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                            vehicle.status === "active"
+                              ? "bg-green-500"
+                              : "bg-gray-300"
+                          } ${updatingStatus === vehicle._id ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                              vehicle.status === "active"
+                                ? "translate-x-6"
+                                : "translate-x-1"
+                            }`}
+                          />
+                        </button>
+                        <span
+                          className={`ml-2 text-xs font-semibold ${
+                            vehicle.status === "active"
+                              ? "text-green-600"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {vehicle.status === "active" ? "Active" : "Inactive"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEdit(vehicle)}
+                            className="inline-flex items-center px-3 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors duration-200 text-xs font-medium"
+                          >
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              />
+                            </svg>
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(vehicle._id)}
+                            className="inline-flex items-center px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 transition-colors duration-200 text-xs font-medium"
+                          >
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                              />
+                            </svg>
+                            Delete
+                          </button>
+                          <button
+                            onClick={() => handleDownloadQR(vehicle, index)}
+                            className="inline-flex items-center px-3 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-colors duration-200 text-xs font-medium"
+                          >
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                              />
+                            </svg>
+                            QR
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="8"
+                      className="px-6 py-12 text-center text-gray-500"
+                    >
+                      <div className="flex flex-col items-center">
+                        <svg
+                          className="w-16 h-16 mb-4 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
+                        </svg>
+                        <p className="text-lg font-medium">No vehicles found</p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          Try adjusting your search criteria
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Pagination Section */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-sm text-gray-600">
+              Showing {vehicles.length > 0 ? startIndex + 1 : 0} to{" "}
+              {Math.min(startIndex + vehicles.length, data?.pagination?.total || 0)} of{" "}
+              {data?.pagination?.total || 0} vehicles
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Go To Page Input */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Go to page:</span>
+                <input
+                  type="number"
+                  min="1"
+                  max={totalPages}
+                  value={inputPage}
+                  onChange={(e) => setInputPage(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const page = parseInt(inputPage);
+                      if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                        handlePageChange(page);
+                      }
+                    }
+                  }}
+                  className="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-sm"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
+                    currentPage === 1
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg"
+                  }`}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+
+                <span className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg">
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
+                    currentPage === totalPages
+                      ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg"
+                  }`}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <EditVehicle

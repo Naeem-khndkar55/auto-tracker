@@ -53,6 +53,10 @@ export const updateVehicle = async (id, data) => {
 // ✅ Delete Vehicle
 export const deleteVehicle = async (id) => API.delete(`/vehicles/${id}`);
 
+// ✅ Update Vehicle Status
+export const updateVehicleStatus = async (id, status) =>
+  API.patch(`/vehicles/${id}/status`, { status });
+
 export const getProfile = async () => {
   const token = localStorage.getItem("token");
   if (!token) {
