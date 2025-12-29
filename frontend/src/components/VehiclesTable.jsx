@@ -418,7 +418,7 @@ const VehiclesTable = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky right-0 bg-white z-10">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky right-0 z-10">
                         <div className="flex items-center justify-end menu-container relative">
                           {/* 3-Dot Menu Button */}
                           <div className="relative">
