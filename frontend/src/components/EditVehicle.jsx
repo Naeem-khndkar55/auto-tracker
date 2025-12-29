@@ -183,11 +183,11 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
               className="w-full border p-2 rounded-md"
             />
             {previewImage && (
-              <div className="mt-2">
+              <div className="mt-2 rounded-md overflow-hidden border">
                 <img
                   src={previewImage}
                   alt="Preview"
-                  className="w-full h-30 object-cover rounded-md border"
+                  className="w-full h-64 object-contain"
                 />
               </div>
             )}
