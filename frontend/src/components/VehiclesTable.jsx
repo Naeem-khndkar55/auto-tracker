@@ -496,22 +496,30 @@ const VehiclesTable = () => {
         {/* Dropdown Menu - Fixed Position Portal */}
         {openMenuId && selectedVehicle && (
           <>
-            {/* Backdrop overlay */}
+            {/* Backdrop overlay - closes menu on outside click */}
             <div 
               className="fixed inset-0 z-[9998]" 
               onClick={() => {
+                // Close menu when clicking outside
                 setOpenMenuId(null);
                 setSelectedVehicle(null);
               }}
             />
-            {/* Menu positioned fixed */}
+            {/* Menu positioned fixed - stops propagation to prevent backdrop from closing */}
             <div 
               className="fixed w-56 bg-white rounded-xl shadow-2xl border border-gray-200 z-[9999] overflow-hidden min-w-[224px]"
               style={{
                 top: `${menuPosition.top}px`,
                 right: `${menuPosition.right}px`,
               }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                // Prevent backdrop from receiving click
+                e.stopPropagation();
+              }}
+              onMouseDown={(e) => {
+                // Also stop on mousedown to prevent any issues
+                e.stopPropagation();
+              }}
             >
               {/* Menu Header */}
               <div className="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
@@ -521,12 +529,13 @@ const VehiclesTable = () => {
               <div className="py-1">
                 {/* View */}
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     navigate(`/vehicles/${selectedVehicle._id}`);
                     setOpenMenuId(null);
                     setSelectedVehicle(null);
                   }}
-                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-3 transition-all duration-150 group"
+                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 flex items-center gap-3 transition-all duration-150 group cursor-pointer"
                 >
                   <div className="w-8 h-8 rounded-lg bg-purple-100 group-hover:bg-purple-200 flex items-center justify-center transition-colors">
                     <svg
@@ -554,12 +563,13 @@ const VehiclesTable = () => {
 
                 {/* Edit */}
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     handleEdit(selectedVehicle);
                     setOpenMenuId(null);
                     setSelectedVehicle(null);
                   }}
-                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-3 transition-all duration-150 group"
+                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-3 transition-all duration-150 group cursor-pointer"
                 >
                   <div className="w-8 h-8 rounded-lg bg-blue-100 group-hover:bg-blue-200 flex items-center justify-center transition-colors">
                     <svg
@@ -581,7 +591,8 @@ const VehiclesTable = () => {
 
                 {/* QR Code */}
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     const vehicleIndex = vehicles.findIndex(v => v._id === selectedVehicle._id);
                     if (selectedVehicle.qrCode) {
                       handleDownloadQR(selectedVehicle, vehicleIndex);
@@ -592,7 +603,7 @@ const VehiclesTable = () => {
                     setOpenMenuId(null);
                     setSelectedVehicle(null);
                   }}
-                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-green-700 flex items-center gap-3 transition-all duration-150 group"
+                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-green-50 hover:text-green-700 flex items-center gap-3 transition-all duration-150 group cursor-pointer"
                 >
                   <div className="w-8 h-8 rounded-lg bg-green-100 group-hover:bg-green-200 flex items-center justify-center transition-colors">
                     <svg
@@ -617,12 +628,13 @@ const VehiclesTable = () => {
 
                 {/* Delete */}
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     handleDelete(selectedVehicle._id, selectedVehicle.ownerName);
                     setOpenMenuId(null);
                     setSelectedVehicle(null);
                   }}
-                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3 transition-all duration-150 group"
+                  className="w-full px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3 transition-all duration-150 group cursor-pointer"
                 >
                   <div className="w-8 h-8 rounded-lg bg-red-100 group-hover:bg-red-200 flex items-center justify-center transition-colors">
                     <svg
