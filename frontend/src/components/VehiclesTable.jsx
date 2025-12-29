@@ -445,7 +445,7 @@ const VehiclesTable = () => {
 
                             {/* Dropdown Menu */}
                             {openMenuId === vehicle._id && (
-                              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 z-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                                 {/* Menu Header */}
                                 <div className="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</p>
