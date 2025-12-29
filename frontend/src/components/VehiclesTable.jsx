@@ -419,9 +419,9 @@ const VehiclesTable = () => {
                         </div>
                       </td>
                       <td className="px-2 py-4 whitespace-nowrap text-sm font-medium sticky right-0 bg-white z-10">
-                        <div className="flex items-center justify-end menu-container relative">
+                        <div className="flex items-center justify-end menu-container relative z-30">
                           {/* 3-Dot Menu Button */}
-                          <div className="relative">
+                          <div className="relative z-40">
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -445,13 +445,19 @@ const VehiclesTable = () => {
 
                             {/* Dropdown Menu */}
                             {openMenuId === vehicle._id && (
-                              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 z-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                                {/* Menu Header */}
-                                <div className="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
-                                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</p>
-                                </div>
-                                
-                                <div className="py-1">
+                              <>
+                                {/* Backdrop overlay to ensure menu covers content */}
+                                <div 
+                                  className="fixed inset-0 z-[9998] bg-transparent" 
+                                  onClick={() => setOpenMenuId(null)}
+                                />
+                                <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-200 z-[9999] overflow-hidden min-w-[224px]">
+                                  {/* Menu Header */}
+                                  <div className="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</p>
+                                  </div>
+                                  
+                                  <div className="py-1">
                                   {/* View */}
                                   <button
                                     onClick={() => {
@@ -569,8 +575,9 @@ const VehiclesTable = () => {
                                     </div>
                                     <span>Delete Vehicle</span>
                                   </button>
+                                  </div>
                                 </div>
-                              </div>
+                              </>
                             )}
                           </div>
                         </div>
