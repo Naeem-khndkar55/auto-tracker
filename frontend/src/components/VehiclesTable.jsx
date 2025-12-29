@@ -297,12 +297,12 @@ const VehiclesTable = () => {
                     "Vehicle Number",
                     "Permitted Route",
                     "Status",
-                    "Actions",
+                    "",
                   ].map((header) => (
                     <th
                       key={header}
                       className={`px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider ${
-                        header === "Actions" ? "sticky right-0 bg-gradient-to-r from-blue-600 to-blue-700 z-10" : ""
+                        header === "" ? "sticky right-0 bg-gradient-to-r from-blue-600 to-blue-700 z-10" : ""
                       }`}
                     >
                       {header}
