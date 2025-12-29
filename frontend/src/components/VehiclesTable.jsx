@@ -419,34 +419,7 @@ const VehiclesTable = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium sticky right-0 bg-white z-10">
-                        <div className="flex items-center gap-3 menu-container relative">
-                          {/* Status Toggle */}
-                          <div className="flex items-center gap-3">
-                            <button
-                              onClick={() => handleStatusToggle(vehicle)}
-                              disabled={updatingStatus === vehicle._id}
-                              className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md hover:shadow-lg ${
-                                vehicle.status === "active"
-                                  ? "bg-gradient-to-r from-green-500 to-green-600 focus:ring-green-500"
-                                  : "bg-gradient-to-r from-gray-300 to-gray-400 focus:ring-gray-400"
-                              } ${updatingStatus === vehicle._id ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:scale-105"}`}
-                              title={`Click to ${vehicle.status === "active" ? "deactivate" : "activate"} vehicle`}
-                            >
-                              {updatingStatus === vehicle._id && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                </div>
-                              )}
-                              <span
-                                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-all duration-300 ${
-                                  vehicle.status === "active"
-                                    ? "translate-x-6"
-                                    : "translate-x-1"
-                                } ${updatingStatus === vehicle._id ? "opacity-0" : "opacity-100"}`}
-                              />
-                            </button>
-                          </div>
-
+                        <div className="flex items-center justify-end menu-container relative">
                           {/* 3-Dot Menu Button */}
                           <div className="relative">
                             <button
