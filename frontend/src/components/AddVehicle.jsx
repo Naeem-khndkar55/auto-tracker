@@ -153,27 +153,27 @@ const AddVehicle = () => {
         </div>
 
         {/* Form Card */}
-        <form
-          onSubmit={handleSubmit}
+    <form
+      onSubmit={handleSubmit}
           className="bg-white rounded-2xl shadow-xl p-8"
-        >
+    >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Owner Name */}
             <InputField
               icon={FaUser}
-              name="ownerName"
-              value={formData.ownerName}
-              onChange={handleChange}
-              placeholder="Owner Name"
-            />
+        name="ownerName"
+        value={formData.ownerName}
+        onChange={handleChange}
+        placeholder="Owner Name"
+      />
 
             {/* Phone Number */}
             <InputField
               icon={FaPhone}
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="Phone Number"
+        name="phoneNumber"
+        value={formData.phoneNumber}
+        onChange={handleChange}
+        placeholder="Phone Number"
               type="tel"
             />
 
@@ -181,37 +181,37 @@ const AddVehicle = () => {
             <div className="md:col-span-2">
               <InputField
                 icon={FaMapMarkerAlt}
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Address"
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        placeholder="Address"
               />
             </div>
 
             {/* Vehicle Number */}
             <InputField
               icon={FaCar}
-              name="vehicleNumber"
-              value={formData.vehicleNumber}
-              onChange={handleChange}
-              placeholder="Vehicle Number"
-            />
+        name="vehicleNumber"
+        value={formData.vehicleNumber}
+        onChange={handleChange}
+        placeholder="Vehicle Number"
+      />
 
             {/* Permitted Route */}
             <InputField
               icon={FaRoute}
-              name="permittedRoute"
-              value={formData.permittedRoute}
-              onChange={handleChange}
-              placeholder="Permitted Route"
-            />
+        name="permittedRoute"
+        value={formData.permittedRoute}
+        onChange={handleChange}
+        placeholder="Permitted Route"
+      />
 
             {/* Organization */}
             <SelectField
               icon={FaBuilding}
-              name="organization"
-              value={formData.organization}
-              onChange={handleChange}
+        name="organization"
+        value={formData.organization}
+        onChange={handleChange}
               placeholder="Organization"
               options={organizations}
             />
@@ -219,9 +219,9 @@ const AddVehicle = () => {
             {/* Vehicle Type */}
             <SelectField
               icon={FaTag}
-              name="vehicle_type"
-              value={formData.vehicle_type}
-              onChange={handleChange}
+        name="vehicle_type"
+        value={formData.vehicle_type}
+        onChange={handleChange}
               placeholder="Vehicle Type"
               options={types}
             />
@@ -233,13 +233,13 @@ const AddVehicle = () => {
                 Owner Image
               </label>
               <div className="relative">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
-                  required
-                />
+        required
+      />
               </div>
               {formData.ownerImage && (
                 <p className="mt-2 text-sm text-green-600 flex items-center gap-2">
@@ -252,46 +252,46 @@ const AddVehicle = () => {
 
           {/* Submit Button */}
           <div className="mt-8 flex gap-4">
-            <button
-              type="submit"
+      <button
+        type="submit"
               disabled={loading}
               className={`flex-1 px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+        }`}
+      >
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <svg
+              className="animate-spin h-5 w-5 mr-2 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
             >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin h-5 w-5 mr-2 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"
-                    ></path>
-                  </svg>
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"
+              ></path>
+            </svg>
                   Adding Vehicle...
-                </div>
-              ) : (
+          </div>
+        ) : (
                 <div className="flex items-center justify-center gap-2">
                   <FaPlusCircle />
                   Add Vehicle
                 </div>
-              )}
-            </button>
+        )}
+      </button>
           </div>
-        </form>
+    </form>
       </div>
     </div>
   );

@@ -63,15 +63,15 @@ const Login = () => {
                 <FaUser className="inline w-4 h-4 mr-2 text-blue-600" />
                 Username
               </label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
                 placeholder="Enter your username"
                 className="w-full px-4 py-3 pl-11 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                required
-              />
+          required
+        />
             </div>
 
             {/* Password Input */}
@@ -80,57 +80,57 @@ const Login = () => {
                 <FaLock className="inline w-4 h-4 mr-2 text-blue-600" />
                 Password
               </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
                 placeholder="Enter your password"
                 className="w-full px-4 py-3 pl-11 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
-                required
-              />
+          required
+        />
             </div>
 
             {/* Login Button */}
-            <button
-              type="submit"
+        <button
+          type="submit"
               disabled={loading}
               className={`w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin h-5 w-5 mr-2 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"
-                    ></path>
-                  </svg>
-                  Logging in...
-                </div>
-              ) : (
+          }`}
+        >
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <svg
+                className="animate-spin h-5 w-5 mr-2 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"
+                ></path>
+              </svg>
+              Logging in...
+            </div>
+          ) : (
                 <div className="flex items-center justify-center gap-2">
                   <FaSignInAlt />
                   Sign In
                 </div>
-              )}
-            </button>
-          </form>
+          )}
+        </button>
+      </form>
 
           {/* Footer */}
           <div className="mt-6 pt-6 border-t border-gray-200 text-center">

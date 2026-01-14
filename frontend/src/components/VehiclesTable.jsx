@@ -189,7 +189,7 @@ const VehiclesTable = () => {
         <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
             Vehicle Management
-          </h2>
+      </h2>
           <p className="text-gray-600">Manage and monitor all vehicles</p>
         </div>
 
@@ -217,10 +217,10 @@ const VehiclesTable = () => {
                     />
                   </svg>
                 </div>
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
                   placeholder="Search by owner name, phone number, vehicle number, address..."
                   className="w-full pl-12 pr-12 py-3.5 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 text-gray-700 placeholder-gray-400 shadow-sm hover:shadow-md"
                 />
@@ -282,38 +282,38 @@ const VehiclesTable = () => {
               )}
             </div>
           </div>
-        </div>
+      </div>
 
         {/* Table Section */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
+      <div className="overflow-x-auto">
             <table className="w-full min-w-[1000px]">
-              <thead>
+          <thead>
                 <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-                  {[
-                    "S/N",
-                    "Owner Name",
-                    "Phone Number",
-                    "Address",
-                    "Vehicle Number",
-                    "Permitted Route",
+              {[
+                "S/N",
+                "Owner Name",
+                "Phone Number",
+                "Address",
+                "Vehicle Number",
+                "Permitted Route",
                     "Status",
                     "",
-                  ].map((header) => (
-                    <th
-                      key={header}
+              ].map((header) => (
+                <th
+                  key={header}
                       className={`px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider ${
                         header === "" ? "sticky right-0 bg-gradient-to-r from-blue-600 to-blue-700 z-10" : ""
                       }`}
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {isLoading ? (
-                  <tr>
+            {isLoading ? (
+              <tr>
                     <td
                       colSpan="8"
                       className="px-6 py-12 text-center text-gray-500"
@@ -322,10 +322,10 @@ const VehiclesTable = () => {
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
                         <span className="ml-3">Loading vehicles...</span>
                       </div>
-                    </td>
-                  </tr>
-                ) : isError ? (
-                  <tr>
+                </td>
+              </tr>
+            ) : isError ? (
+              <tr>
                     <td
                       colSpan="8"
                       className="px-6 py-12 text-center text-red-500"
@@ -346,41 +346,41 @@ const VehiclesTable = () => {
                         </svg>
                         Failed to fetch vehicles. Please try again.
                       </div>
-                    </td>
-                  </tr>
-                ) : vehicles.length > 0 ? (
-                  vehicles.map((vehicle, index) => (
+                </td>
+              </tr>
+            ) : vehicles.length > 0 ? (
+              vehicles.map((vehicle, index) => (
                     <tr
                       key={vehicle._id}
                       className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-all duration-150 border-b border-gray-100"
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {startIndex + index + 1}
-                      </td>
+                    {startIndex + index + 1}
+                  </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                        {vehicle.ownerName}
-                      </td>
+                    {vehicle.ownerName}
+                  </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                        {vehicle.phoneNumber}
-                      </td>
+                    {vehicle.phoneNumber}
+                  </td>
                       <td className="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">
-                        {vehicle.address}
-                      </td>
+                    {vehicle.address}
+                  </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                         <button
                           onClick={() => navigate(`/vehicles/${vehicle._id}`)}
                           className="text-blue-600 hover:text-blue-800 hover:underline font-semibold transition-colors duration-200"
                           title="Click to view details"
                         >
-                          {vehicle.vehicleNumber}
+                    {vehicle.vehicleNumber}
                         </button>
-                      </td>
+                  </td>
                       <td className="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">
-                        {vehicle.permittedRoute}
-                      </td>
+                    {vehicle.permittedRoute}
+                  </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-3">
-                          <button
+                    <button
                             onClick={() => handleStatusToggle(vehicle)}
                             disabled={updatingStatus === vehicle._id}
                             className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md hover:shadow-lg ${
@@ -402,7 +402,7 @@ const VehiclesTable = () => {
                                   : "translate-x-1"
                               } ${updatingStatus === vehicle._id ? "opacity-0" : "opacity-100"}`}
                             />
-                          </button>
+                    </button>
                           <div className="flex flex-col">
                             <span
                               className={`text-xs font-bold ${
@@ -423,7 +423,7 @@ const VehiclesTable = () => {
                         <div className="flex items-center justify-end menu-container relative z-30">
                           {/* 3-Dot Menu Button */}
                           <div className="relative z-40">
-                            <button
+                    <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const button = e.currentTarget;
@@ -454,14 +454,14 @@ const VehiclesTable = () => {
                               >
                                 <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                               </svg>
-                            </button>
+                    </button>
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
                     <td
                       colSpan="8"
                       className="px-6 py-12 text-center text-gray-500"
@@ -485,11 +485,11 @@ const VehiclesTable = () => {
                           Try adjusting your search criteria
                         </p>
                       </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
           </div>
         </div>
 
@@ -524,8 +524,8 @@ const VehiclesTable = () => {
               {/* Menu Header */}
               <div className="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</p>
-              </div>
-              
+      </div>
+
               <div className="py-1">
                 {/* View */}
                 <button
@@ -668,55 +668,55 @@ const VehiclesTable = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Go To Page Input */}
-              <div className="flex items-center gap-2">
+        {/* Go To Page Input */}
+        <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">Go to page:</span>
-                <input
-                  type="number"
-                  min="1"
-                  max={totalPages}
-                  value={inputPage}
-                  onChange={(e) => setInputPage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      const page = parseInt(inputPage);
-                      if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                        handlePageChange(page);
-                      }
-                    }
-                  }}
+          <input
+            type="number"
+            min="1"
+            max={totalPages}
+            value={inputPage}
+            onChange={(e) => setInputPage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const page = parseInt(inputPage);
+                if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                  handlePageChange(page);
+                }
+              }
+            }}
                   className="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-sm"
-                />
-              </div>
+          />
+        </div>
 
               <div className="flex items-center gap-2">
-                <button
+        <button
                   className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
                     currentPage === 1
                       ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                       : "bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg"
                   }`}
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
 
                 <span className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg">
-                  Page {currentPage} of {totalPages}
-                </span>
+          Page {currentPage} of {totalPages}
+        </span>
 
-                <button
+        <button
                   className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors duration-200 ${
-                    currentPage === totalPages
+            currentPage === totalPages
                       ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                       : "bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg"
                   }`}
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
               </div>
             </div>
           </div>

@@ -9,6 +9,7 @@ const {
   uploadExcel,
   updateExistingVehiclesStatus,
   updateVehicleStatus,
+  updateAllVehiclesStatus,
 } = require("../controllers/vehicleController");
 const upload = require("../utils/multer");
 const { protect } = require("../middleware/authMiddleware");
@@ -18,6 +19,7 @@ router.get("/getAll", protect, getAllVehicles);
 router.get("/:id/details", getVehicleDetails);
 router.get("/:id", getVehicleById);
 router.put("/:id", protect, upload.single("ownerImage"), updateVehicle);
+router.patch("/status/all", protect, updateAllVehiclesStatus);
 router.patch("/:id/status", protect, updateVehicleStatus);
 router.post("/add", protect, upload.single("ownerImage"), addVehicle);
 router.post("/upload/excel", upload.single("file"), uploadExcel);

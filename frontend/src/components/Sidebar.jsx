@@ -118,9 +118,9 @@ const Sidebar = () => {
           {/* Logout Section */}
           <div className="p-4 border-t border-gray-700">
             <button
-              onClick={handleLogout}
+          onClick={handleLogout}
               className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-gradient-to-r from-red-600 to-red-500 text-white hover:from-red-700 hover:to-red-600 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-            >
+        >
               <FaSignOutAlt className="w-5 h-5" />
               <span className="font-medium">Logout</span>
             </button>
@@ -136,7 +136,7 @@ const Sidebar = () => {
             </p>
           </div>
         </div>
-      </div>
+    </div>
     </>
   );
 };

@@ -86,7 +86,7 @@ const VehicleDetails = () => {
           </p>
           <p className="text-base font-semibold text-gray-900 break-words">
             {value || "N/A"}
-          </p>
+        </p>
         </div>
       </div>
     </div>
@@ -124,13 +124,13 @@ const VehicleDetails = () => {
               </div>
             </div>
           </div>
-        </div>
+      </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Main Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Owner Image Section */}
-            {vehicle.ownerImage && (
+      {vehicle.ownerImage && (
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -140,9 +140,9 @@ const VehicleDetails = () => {
                 </div>
                 <div className="p-6">
                   <div className="relative rounded-xl overflow-hidden shadow-lg">
-                    <img
-                      src={vehicle.ownerImage}
-                      alt="Owner"
+        <img
+          src={vehicle.ownerImage}
+          alt="Owner"
                       className="w-full h-96 object-contain"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -176,7 +176,7 @@ const VehicleDetails = () => {
                     label="Vehicle Number"
                     value={vehicle.vehicleNumber}
                     className="md:col-span-2"
-                  />
+        />
                   <InfoCard
                     icon={FaMapMarkerAlt}
                     label="Address"
@@ -210,7 +210,7 @@ const VehicleDetails = () => {
 
           {/* Right Column - QR Code */}
           <div className="space-y-6">
-            {vehicle.qrCode && (
+      {vehicle.qrCode && (
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-6">
                 <div className="bg-gradient-to-r from-green-600 to-green-700 p-4">
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -221,9 +221,9 @@ const VehicleDetails = () => {
                 <div className="p-6">
                   <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 flex flex-col items-center">
                     <div className="bg-white p-4 rounded-lg shadow-lg mb-4">
-                      <img
-                        src={vehicle.qrCode}
-                        alt="QR Code"
+          <img
+            src={vehicle.qrCode}
+            alt="QR Code"
                         className="w-48 h-48 object-contain"
                       />
                     </div>
