@@ -376,6 +376,41 @@ const updateVehicleStatus = async (req, res) => {
   }
 };
 
+// ✅ Update All Vehicles Status (bulk update)
+const updateAllVehiclesStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    // Validate status value
+    if (!status || !["active", "inactive"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Status must be either 'active' or 'inactive'",
+      });
+    }
+
+    // Update all vehicles with the new status
+    const result = await Vehicle.updateMany(
+      {}, // Empty filter means update all documents
+      { $set: { status } }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `All vehicles status updated to ${status} successfully`,
+      updatedCount: result.modifiedCount,
+      matchedCount: result.matchedCount,
+      totalVehicles: result.matchedCount,
+    });
+  } catch (error) {
+    console.error(`❌ Error updating all vehicles status: ${error.message}`);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addVehicle,
   getAllVehicles,
@@ -386,4 +421,5 @@ module.exports = {
   uploadExcel,
   updateExistingVehiclesStatus,
   updateVehicleStatus,
+  updateAllVehiclesStatus,
 };
