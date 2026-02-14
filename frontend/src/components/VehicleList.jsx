@@ -75,14 +75,13 @@ const VehicleList = () => {
     setIsEditOpen(true);
   };
 
-  // ✅ Handle Vehicle Update (auto-refresh)
-  const handleUpdateChange = async (updatedVehicle) => {
+  // Handle vehicle update (EditVehicle shows its own success toast)
+  const handleUpdateChange = async () => {
     try {
-      toast.success("Vehicle updated successfully");
       await fetchData();
       setIsEditOpen(false);
-    } catch (error) {
-      toast.error("Failed to update vehicle");
+    } catch {
+      toast.error("Failed to refresh list after update");
     }
   };
 
@@ -253,7 +252,7 @@ const VehicleList = () => {
       <Dialog
         showDialog={showDialog}
         closeDialog={() => setShowDialog(false)}
-        vichicle={selectedVehicle}
+        vehicle={selectedVehicle}
       />
     </div>
   );

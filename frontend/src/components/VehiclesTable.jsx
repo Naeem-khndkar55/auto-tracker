@@ -112,26 +112,10 @@ const VehiclesTable = () => {
   };
   const handleUpdateChange = async () => {
     try {
-      toast.success("✅ Vehicle Updated Successfully", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        style: {
-          background: "linear-gradient(to right, #3b82f6, #2563eb)",
-          color: "#fff",
-          fontWeight: "600",
-          fontSize: "14px",
-          borderRadius: "12px",
-          padding: "16px",
-        },
-      });
       refetch();
       setIsEditOpen(false);
     } catch {
-      toast.error("❌ Failed to Update Vehicle", {
+      toast.error("❌ Failed to refresh list after update", {
         position: "top-right",
         autoClose: 4000,
         hideProgressBar: false,
@@ -734,7 +718,7 @@ const VehiclesTable = () => {
       <Dialog
         showDialog={showDialog}
         closeDialog={() => setShowDialog(false)}
-        vichicle={selectedVehicle}
+        vehicle={selectedVehicle}
       />
 
       {/* Delete Confirmation Modal */}

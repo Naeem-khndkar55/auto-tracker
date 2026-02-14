@@ -22,14 +22,16 @@ export const getAllVehicles = async () => API.get("/vehicles/getAll");
 // ✅ Add Vehicle
 export const addVehicle = async (data) => {
   const formData = new FormData();
-  formData.append("ownerName", data.ownerName);
-  formData.append("phoneNumber", data.phoneNumber);
-  formData.append("address", data.address);
-  formData.append("vehicleNumber", data.vehicleNumber);
-  formData.append("permittedRoute", data.permittedRoute);
-  formData.append("ownerImage", data.ownerImage);
-  formData.append("vehicle_type", data.vehicle_type);
-  formData.append("organization", data.organization);
+  formData.append("ownerName", data.ownerName ?? "");
+  formData.append("phoneNumber", data.phoneNumber ?? "");
+  formData.append("address", data.address ?? "");
+  formData.append("vehicleNumber", data.vehicleNumber ?? "");
+  formData.append("permittedRoute", data.permittedRoute ?? "");
+  if (data.ownerImage instanceof File) {
+    formData.append("ownerImage", data.ownerImage);
+  }
+  formData.append("vehicle_type", data.vehicle_type ?? "");
+  formData.append("organization", data.organization ?? "");
 
   return API.post("/vehicles/add", formData);
 };
@@ -40,15 +42,17 @@ export const getVehicleById = async (id) => API.get(`/vehicles/${id}`);
 // ✅ Get Vehicle Details (JSON API)
 export const getVehicleDetails = async (id) => API.get(`/vehicles/${id}/details`);
 
-// ✅ Update Vehicle
+// ✅ Update Vehicle (multipart/form-data; do not set Content-Type – axios sets it with boundary)
 export const updateVehicle = async (id, data) => {
   const formData = new FormData();
-  formData.append("ownerName", data.ownerName);
-  formData.append("phoneNumber", data.phoneNumber);
-  formData.append("address", data.address);
-  formData.append("vehicleNumber", data.vehicleNumber);
-  formData.append("permittedRoute", data.permittedRoute);
-  if (data.ownerImage) formData.append("ownerImage", data.ownerImage);
+  formData.append("ownerName", data.ownerName ?? "");
+  formData.append("phoneNumber", data.phoneNumber ?? "");
+  formData.append("address", data.address ?? "");
+  formData.append("vehicleNumber", data.vehicleNumber ?? "");
+  formData.append("permittedRoute", data.permittedRoute ?? "");
+  if (data.ownerImage instanceof File) {
+    formData.append("ownerImage", data.ownerImage);
+  }
 
   return API.put(`/vehicles/${id}`, formData);
 };

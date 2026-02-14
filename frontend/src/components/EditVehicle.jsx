@@ -9,12 +9,13 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
     address: "",
     vehicleNumber: "",
     permittedRoute: "",
-    ownerImage: null, // ✅ To handle file upload
+    ownerImage: null,
   });
 
   const [previewImage, setPreviewImage] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ✅ Load existing data into form when vehicleData changes
+  // Load existing data when vehicleData changes
   useEffect(() => {
     if (vehicleData) {
       setFormData({
@@ -25,40 +26,36 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
         permittedRoute: vehicleData.permittedRoute || "",
         ownerImage: null,
       });
-
-      // ✅ Preview existing image if available
-      if (vehicleData.ownerImage) {
-        setPreviewImage(vehicleData.ownerImage);
-      }
+      setPreviewImage(vehicleData.ownerImage || null);
     }
   }, [vehicleData]);
 
-  // ✅ Handle text input change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Handle file input change
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, ownerImage: file });
-
-      // ✅ Create preview for uploaded image
+      setFormData((prev) => ({ ...prev, ownerImage: file }));
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
+      reader.onloadend = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  // ✅ Submit form and update vehicle
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const id = vehicleData?._id ?? vehicleData?.id;
+    if (!id) {
+      toast.error("Vehicle data missing. Please close and try again.");
+      return;
+    }
 
+    setIsSubmitting(true);
     try {
-      const updatedVehicle = await updateVehicle(vehicleData._id, formData);
+      const { data } = await updateVehicle(id, formData);
       toast.success("✅ Vehicle Updated Successfully", {
         position: "top-right",
         autoClose: 3000,
@@ -76,12 +73,15 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
         },
       });
 
-      // ✅ Trigger state update in parent component
-      onUpdate(updatedVehicle);
-
-      onClose(); // ✅ Close modal after success
+      // ✅ Trigger state update in parent (pass API response vehicle)
+      onUpdate(data);
+      onClose();
     } catch (error) {
-      toast.error("❌ Failed to Update Vehicle", {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to update vehicle";
+      toast.error(`❌ ${message}`, {
         position: "top-right",
         autoClose: 4000,
         hideProgressBar: false,
@@ -97,6 +97,8 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
           padding: "16px",
         },
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -197,9 +199,10 @@ const EditVehicle = ({ isOpen, vehicleData, onClose, onUpdate }) => {
           <div className="flex justify-between mt-4">
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+              disabled={isSubmitting}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Update
+              {isSubmitting ? "Updating…" : "Update"}
             </button>
             <button
               type="button"
