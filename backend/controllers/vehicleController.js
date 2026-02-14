@@ -171,32 +171,59 @@ const getVehicleDetails = async (req, res) => {
   }
 };
 
-// ✅ Update Vehicle
+// ✅ Update Vehicle (multipart/form-data from frontend)
 const updateVehicle = async (req, res) => {
-  const { ownerName, phoneNumber, address, vehicleNumber, permittedRoute } =
-    req.body;
+  const body = req.body || {};
+  const allowed = ["ownerName", "phoneNumber", "address", "vehicleNumber", "permittedRoute"];
+  const updateFields = {};
+  allowed.forEach((key) => {
+    if (body[key] !== undefined && body[key] !== null && String(body[key]).trim() !== "") {
+      updateFields[key] = body[key];
+    }
+  });
 
   try {
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      updateFields.ownerImage = result.secure_url;
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (unlinkErr) {
+        console.warn("Could not delete temp file:", req.file.path);
+      }
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({
+        message: "No update data provided. Send ownerName, phoneNumber, address, vehicleNumber, permittedRoute or ownerImage.",
+      });
+    }
+
     const updatedVehicle = await Vehicle.findOneAndUpdate(
       { _id: req.params.id },
-      { ownerName, phoneNumber, address, vehicleNumber, permittedRoute },
-      { new: true }
+      { $set: updateFields },
+      { new: true, runValidators: true }
     );
 
     if (!updatedVehicle) {
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
-    // ✅ Regenerate QR Code with updated details
+    // Regenerate QR Code with updated details
     const qrData = `${BASE_URL}/api/vehicles/${updatedVehicle._id}`;
     const qrCode = await QRCode.toDataURL(qrData);
     updatedVehicle.qrCode = qrCode;
-
     await updatedVehicle.save();
 
     res.status(200).json(updatedVehicle);
   } catch (error) {
-    console.error(`❌ Error updating vehicle: ${error.message}`);
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Vehicle number already exists" });
+    }
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message || "Validation failed" });
+    }
+    console.error("❌ Error updating vehicle:", error.message);
     res.status(500).json({ message: error.message });
   }
 };

@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from "react";
 import IDCardPreview from "./IDCardPreview"; // make sure this exists
 
-const Dialog = ({ showDialog, closeDialog, vichicle }) => {
+const Dialog = ({ showDialog, closeDialog, vehicle }) => {
   const [visible, setVisible] = useState(false);
 
-  // Handle 0.5s delay
   useEffect(() => {
     let timer;
     if (showDialog) {
-      timer = setTimeout(() => setVisible(true), 500); // delay
+      timer = setTimeout(() => setVisible(true), 500);
     } else {
       setVisible(false);
     }
     return () => clearTimeout(timer);
   }, [showDialog]);
 
-  // Hide if not visible
   if (!visible) return null;
+  if (!vehicle) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onClick={closeDialog}>
       <div className="relative" onClick={(e) => e.stopPropagation()}>
-        {/* ID Card Preview Here */}
         <IDCardPreview
-          vehicle={vichicle}
-          qrCode={vichicle.qrCode}
+          vehicle={vehicle}
+          qrCode={vehicle.qrCode}
           onDone={closeDialog}
           onClose={closeDialog}
         />
